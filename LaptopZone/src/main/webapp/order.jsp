@@ -81,7 +81,6 @@ ul a:hover {
 	font-weight: bold;
 	margin-bottom: 20px;
 }
-
 #main:link {
 	text-decoration-line: none;
 }
