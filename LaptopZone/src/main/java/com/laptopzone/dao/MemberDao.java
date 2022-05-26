@@ -1,0 +1,171 @@
+package com.laptopzone.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import com.laptopzone.dto.MemberDto;
+
+
+
+public class MemberDao {
+
+	Connection conn;
+	PreparedStatement pstmt;
+	ResultSet rs;
+
+	//로그인
+	public int memberLogin(String memberId, String memberPwd) {
+		
+		String query = "select count(member_id) from member where member_id = ? and member_pwd = ?";
+		int check = 0;
+
+		try {
+			conn = DBconnector.getConnection();
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, memberId);
+			pstmt.setString(2, memberPwd);
+			rs = pstmt.executeQuery();
+
+			rs.next();
+			check = rs.getInt(1);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return check;
+	}
+
+	//회원가입
+	public void memberJoin(MemberDto dto) {
+		String query = "insert into member values(?, ?, ?, ?, ?, ?, ?, ?, now())";
+
+		try {
+			conn = DBconnector.getConnection();
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, dto.getMemberId());
+			pstmt.setString(2, dto.getMemberPwd());
+			pstmt.setString(3, dto.getMemberName());
+			pstmt.setString(4, dto.getMemberPhone());
+			pstmt.setString(5, dto.getMemberZipcode());
+			pstmt.setString(6, dto.getMemberAddress());
+			pstmt.setString(7, dto.getMemberAddressDetail());
+			pstmt.setString(8, dto.getMemberAddressEtc());
+			pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	//아이디 중복체크
+	public int checkId(String id) {
+
+		String query = "select count(member_id) from member where member_id = ?";
+		int check = 0;
+
+		try {
+
+			conn = DBconnector.getConnection();
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+
+			rs.next();
+			check = rs.getInt(1);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		return check;
+	}
+
+	//회원 정보
+	public MemberDto showInfo(String id) {
+		MemberDto dto = new MemberDto();
+		
+		String query = "select * from member where member_id = ?";
+		
+		try {
+			conn = DBconnector.getConnection();
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				dto.setMemberName(rs.getString("member_id"));
+				dto.setMemberPwd(rs.getString("member_pwd"));
+				dto.setMemberName(rs.getString("member_name"));
+				dto.setMemberPhone(rs.getString("member_phone"));
+				dto.setMemberZipcode(rs.getString("member_zipcode"));
+				dto.setMemberAddress(rs.getString("member_address"));
+				dto.setMemberAddressDetail(rs.getString("member_address_detail"));
+				dto.setMemberAddressEtc(rs.getString("member_address_etc"));
+				dto.setRegdate(rs.getString("regdate"));
+			}
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs != null) {
+					rs.close();
+				}
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				if(conn != null) {
+					conn.close();
+				}
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return dto;
+	}
+
+}
