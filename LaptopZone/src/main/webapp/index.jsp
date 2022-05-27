@@ -178,7 +178,7 @@
 					<c:otherwise>
 						<li><a href="cart.jsp">장바구니</a></li>
 						<li><a href="order.jsp">주문목록</a></li>
-						<li><a href="userInfo.jsp">회원정보</a></li>
+						<li><a href="memberInfo?memberId=${memberId }">회원정보</a></li>
 					</c:otherwise>
 				</c:choose>
 				<li><p class="menu01">CATEGORY</p></li>

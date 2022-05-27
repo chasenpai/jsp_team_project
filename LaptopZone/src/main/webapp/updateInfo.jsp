@@ -92,7 +92,7 @@ ul a:hover {
 
 section div {
 	width: 700px;
-	margin: 200px auto;
+	margin: 100px auto;
 }
 
 h1 {
@@ -104,10 +104,9 @@ h1 {
 #info {
 	margin: 0px auto;
 	margin-top: 20px;
-	width: 450px;
-	height: 450px;
-	background-color: white;
-	border: 1px solid black;
+	width: 600px;
+	height: 600px;
+	padding: 0px;
 }
 
 input[type="button"] {
@@ -127,10 +126,31 @@ input[type="button"]:hover {
 }
 
 #btn {
-	margin-right: 123px;
+	margin-right: 49px;
 }
 #plzLogin{
 	margin-top: 300px;
+}
+
+table{
+	width:600px;
+	height: 600px;
+	background-color: white;
+	color: black;
+	text-align: center;
+}
+
+table, td, th{
+	border: 1px solid black;
+	border-collapse: collapse;
+}
+
+td{
+	height: 60px;
+	width: 450px;
+}
+.td01{
+	width: 100px;
 }
 </Style>
 </head>
@@ -160,7 +180,7 @@ input[type="button"]:hover {
 					<c:otherwise>
 						<li><a href="cart.jsp">장바구니</a></li>
 						<li><a href="order.jsp">주문목록</a></li>
-						<li><a href="userInfo.jsp">회원정보</a></li>
+						<li><a href="memberInfo?memberId=${memberId }">회원정보</a></li>
 					</c:otherwise>
 				</c:choose>
 				<li><p class="menu01">CATEGORY</p></li>
@@ -180,58 +200,52 @@ input[type="button"]:hover {
 			<c:choose>
 				<c:when test="${memberId ne null }">
 					<div>
-						<h1>회원 정보</h1>
+						<h1>회원 정보 수정</h1>
 						<div id="info">
 							<hr>
 							<table>
 								<tr>
-									<td>아이디</td>
-									<td></td>
+									<td class="td01">아이디</td>
+									<td>${updateInfo.memberId}</td>
 								</tr>
 								<tr>
-									<td>비밀번호</td>
-									<td></td>
+									<td class="td01">비밀번호</td>
+									<td>${updateInfo.memberPwd }</td>
 								</tr>
 								<tr>
-									<td>이름</td>
-									<td></td>
+									<td class="td01">이름</td>
+									<td>${memberInfo.memberName }</td>
 								</tr>
 								<tr>
-									<td>이메일</td>
-									<td></td>
-
+									<td class="td01">전화번호</td>
+									<td>${memberInfo.memberPhone }</td>
 								</tr>
 								<tr>
-									<td>전화번호</td>
-									<td></td>
+									<td class="td01">우편번호</td>
+									<td>${memberInfo.memberZipcode }</td>
 								</tr>
 								<tr>
-									<td>생년월일</td>
-									<td></td>
+									<td class="td01">주소</td>
+									<td>${memberInfo.memberAddress }</td>
 								</tr>
 								<tr>
-									<td>우편번호</td>
-									<td></td>
+									<td class="td01">상세주소</td>
+									<td>${memberInfo.memberAddressDetail }</td>
 								</tr>
 								<tr>
-									<td>주소</td>
-									<td></td>
+									<td class="td01">기타주소</td>
+									<td>${memberInfo.memberAddressEtc }</td>
 								</tr>
 								<tr>
-									<td>상세주소</td>
-									<td></td>
-								</tr>
-								<tr>
-									<td>기타</td>
-									<td></td>
+									<td class="td01">가입일자</td>
+									<td>${memberInfo.regdate }</td>
 								</tr>
 							</table>
-							<hr>
 						</div>
 						<input id="btn" type="button" value="회원정보 수정"
-							onclick="location.href='updateMember'"> <input
+							onclick="location.href='updateInfo'"> <input
 							type="button" value="회원 탈퇴"
-							onclick="location.href='deleteMember'">
+							onclick="location.href='memberDelete'">
 
 					</div>
 				</c:when>

@@ -60,19 +60,43 @@
 <body>
 	<div id="wrap">
 		<h1>약관동의</h1>
-		<form>
+		<form action="join.jsp" method="post" name="agreeForm">
 			<div class="agree">
 				<p>약관1</p>
 			</div>
-			<input type="checkbox" name="agree1"> 약관에 동의합니다 <br>
+			<input type="checkbox" name="agree1" > 약관에 동의합니다 <br>
 			<br>
 			<div class="agree">
 				<p>약관2</p>
 			</div>
 			<input type="checkbox" name="agree2"> 약관에 동의합니다<br> <input
-				type="button" value="다음" onclick="location.href='join.jsp'">
+				type="button" value="다음" onclick="boxCheck()">
 			<input type="button" value="취소" onclick="location.href='index.jsp'">
 		</form>
 	</div>
 </body>
+<script>
+
+	var form = document.agreeForm;
+	
+	function boxCheck(){
+		
+		if(!form.agree1.checked){
+			alert("약관1에 동의해주세요.");
+			form.agree1.focus();
+			return;
+		
+		}else if(!form.agree2.checked){
+			alert("약관2에 동의해주세요.");
+			form.agree2.focus();
+			return;
+		}else{
+			form.submit();
+		}
+	}
+
+	
+	
+	
+</script>
 </html>

@@ -10,13 +10,15 @@ import javax.servlet.http.HttpSession;
 
 import com.laptopzone.service.MemberService;
 
-@WebServlet(urlPatterns = {"/memberLogin", "/memberJoin", "/memberIdCheck", "/memberLogout"})
+@WebServlet(urlPatterns = {"/memberLogin", "/memberJoin", "/memberIdCheck", "/memberLogout", "/idCheck", "/memberInfo", "/updateInfo",
+		"/memberUpdate"})
 public class MemberController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	public MemberController() {
 		super();
 	}
+
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
@@ -40,12 +42,67 @@ public class MemberController extends HttpServlet {
 				request.setAttribute("failed", result);
 				view = "login.jsp";
 			}
+		
+		//로그아웃
 		}else if(com.equals("/memberLogout")) {
 			HttpSession session = request.getSession();
 			session.removeAttribute("memberId");
 			
 			view = "logout.jsp";
+		
+		//아이디 중복체크
+		}else if(com.equals("/idCheck")) {
+			String memberId = request.getParameter("memberId");
+			request.setAttribute("memberId", memberId);
+			request.setAttribute("idCheck", new MemberService().getIdCheck(memberId));
+
+			view = "idCheck.jsp";
+		
+		//회원가입
+		}else if(com.equals("/memberJoin")) {
+			String memberId = request.getParameter("memberId");
+			String memberPwd = request.getParameter("memberPwd");
+			String memberName = request.getParameter("memberName");
+			String memberPhone = request.getParameter("memberPhone");
+			String memberZipcode = request.getParameter("memberZipcode");
+			String memberAddress = request.getParameter("memberAddress");
+			String memberAddressDetail = request.getParameter("memberAddressDetail");
+			String memberAddressEtc = request.getParameter("memberAddressEtc");
+			
+			new MemberService().getMemberJoin(memberId, memberPwd, memberName, memberPhone, memberZipcode, 
+					memberAddress, memberAddressDetail, memberAddressEtc);
+			
+			view = "redirect:login.jsp";
+			
+		//회원정보
+		}else if(com.equals("/memberInfo")) {
+			String memberId = request.getParameter("memberId");
+			request.setAttribute("memberInfo", new MemberService().getMemberInfo(memberId));
+			
+			view = "memberInfo.jsp";
+			
+		//회원정보수정	
+		}else if(com.equals("/updateInfo")) {
+			String memberId = request.getParameter("memberId");
+			request.setAttribute("updateCheck", 1);
+			request.setAttribute("updateInfo", new MemberService().getMemberInfo(memberId));
+			
+			view = "memberInfo.jsp";
+		
+		}else if(com.equals("/memberUpdate")) {
+			String memberId = request.getParameter("memberId");
+			String memberPwd = request.getParameter("memberPwd");
+			String memberName = request.getParameter("memberName");
+			String memberPhone = request.getParameter("memberPhone");
+			String memberZipcode = request.getParameter("memberZipcode");
+			String memberAddress = request.getParameter("memberAddress");
+			String memberAddressDetail = request.getParameter("memberAddressDetail");
+			String memberAddressEtc = request.getParameter("memberAddressEtc");
 		}
+		
+		
+			
+		
 		
 		if(view.startsWith("redirect:")) {
 			response.sendRedirect(view.substring(9));

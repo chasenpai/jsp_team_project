@@ -85,16 +85,15 @@ public class MemberDao {
 	}
 	
 	//아이디 중복체크
-	public int checkId(String id) {
+	public int checkId(String memberId) {
 
 		String query = "select count(member_id) from member where member_id = ?";
 		int check = 0;
 
 		try {
-
 			conn = DBconnector.getConnection();
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, id);
+			pstmt.setString(1, memberId);
 			rs = pstmt.executeQuery();
 
 			rs.next();
@@ -123,7 +122,7 @@ public class MemberDao {
 	}
 
 	//회원 정보
-	public MemberDto showInfo(String id) {
+	public MemberDto showMemberInfo(String id) {
 		MemberDto dto = new MemberDto();
 		
 		String query = "select * from member where member_id = ?";
@@ -135,7 +134,7 @@ public class MemberDao {
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
-				dto.setMemberName(rs.getString("member_id"));
+				dto.setMemberId(rs.getString("member_id"));
 				dto.setMemberPwd(rs.getString("member_pwd"));
 				dto.setMemberName(rs.getString("member_name"));
 				dto.setMemberPhone(rs.getString("member_phone"));
@@ -168,4 +167,48 @@ public class MemberDao {
 		return dto;
 	}
 
+	
+	//회원정보수정
+	public void memberUpdate(MemberDto dto) {
+		String query = "update member set member_pwd = ?, member_name = ?, member_phone = ?, member_zipcode = ?, member_address = ?"
+				+ "member_address_detail = ?, member_address_etc = ?";
+
+		try {
+			conn = DBconnector.getConnection();
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, dto.getMemberId());
+			pstmt.setString(2, dto.getMemberPwd());
+			pstmt.setString(3, dto.getMemberName());
+			pstmt.setString(4, dto.getMemberPhone());
+			pstmt.setString(5, dto.getMemberZipcode());
+			pstmt.setString(6, dto.getMemberAddress());
+			pstmt.setString(7, dto.getMemberAddressDetail());
+			pstmt.setString(8, dto.getMemberAddressEtc());
+			pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
