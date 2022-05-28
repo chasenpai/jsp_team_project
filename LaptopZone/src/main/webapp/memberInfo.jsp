@@ -204,8 +204,10 @@ td{
 					<c:choose>
 						<c:when test="${updateCheck == 1 }">
 							<h1>회원정보수정</h1>
+							<form action="memberUpdate?memberId=${memberId }" method="post" name="updateForm">
 							<div id="info">
 								<hr>
+								
 								<table>
 									<tr>
 										<td class="td01">아이디</td>
@@ -213,42 +215,42 @@ td{
 									</tr>
 									<tr>
 										<td class="td01">비밀번호</td>
-										<td>${memberInfo.memberPwd }</td>
+										<td><input type="password" name="memberPwd" value="${updateInfo.memberPwd }"></td>
 									</tr>
 									<tr>
 										<td class="td01">이름</td>
-										<td>${memberInfo.memberName }</td>
+										<td><input type="text" name="memberName" value="${updateInfo.memberName }"></td>
 									</tr>
 									<tr>
 										<td class="td01">전화번호</td>
-										<td>${memberInfo.memberPhone }</td>
+										<td><input type="text" name="memberPhone" value="${updateInfo.memberPhone }"></td>
 									</tr>
 									<tr>
 										<td class="td01">우편번호</td>
-										<td>${memberInfo.memberZipcode }</td>
+										<td><input type="text" name="memberZipcode" class="postcodify_postcode5" value="${updateInfo.memberZipcode }"></td>
+										<td><input type="button" id="postcodify_search_button" value="검색"></td>
 									</tr>
 									<tr>
 										<td class="td01">주소</td>
-										<td>${memberInfo.memberAddress }</td>
+										<td><input type="text" name="memberAddress" class="postcodify_address" value="${updateInfo.memberAddress }"></td>
 									</tr>
 									<tr>
 										<td class="td01">상세주소</td>
-										<td>${memberInfo.memberAddressDetail }</td>
+										<td><input type="text" name="memberAddressDetail" class="postcodify_details" value="${updateInfo.memberAddressDetail }"></td>
 									</tr>
 									<tr>
 										<td class="td01">기타주소</td>
-										<td>${memberInfo.memberAddressEtc }</td>
+										<td><input type="text" name="memberAddressEtc" class="postcodify_extra_info" value="${updateInfo.memberAddressEtc }"></td>
 									</tr>
 									<tr>
 										<td class="td01">가입일자</td>
-										<td>${memberInfo.regdate }</td>
+										<td>${updateInfo.regdate }</td>
 									</tr>
 								</table>
 							</div>
-							<input id="btn" type="button" value="회원정보수정"
-								onclick="location.href='memberUpdate?memberId=${memberId}'"> <input
-								type="button" value="회원탈퇴"
-								onclick="location.href='#'">
+							<input id="btn" type="button" value="수정완료" onclick="memberUpdate()"> 
+							<input type="button" value="취소" onclick="location.href='memberInfo?memberId=${memberId}'">
+							</form>
 						</c:when>
 						<c:otherwise>
 							<h1>회원정보</h1>
@@ -308,4 +310,70 @@ td{
 		</section>
 	</div>
 </body>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
+<script> $(function() { $("#postcodify_search_button").postcodifyPopUp(); }); </script>
+<script>
+
+	var form = document.updateForm;
+
+	function memberUpdate(){
+		
+		if(form.memberPwd.value.length == 0){
+			alert("비밀번호를 입력해주세요.")
+			form.pwd.focus();
+			return;
+		
+		}else if(!reg.test(form.memberPwd.value)){
+			alert("비밀번호는 8자리 이상, 대문자, 소문자, 숫자 ,특수문자가 모두 포함되어야 합니다.");
+			form.pwd.focus();
+			return;
+		
+		}else if(/(\w)\1\1\1/.test(form.memberPwd.value)){
+			alert("같은 문자를 4번이상 연속 사용하실 수 없습니다")
+			form.pwd.focus();
+			return;
+		
+		}else if(form.memberPwd.value.search(form.memberId.value) != -1){
+			alert("비밀번호에 아이디를 포함할 수 없습니다");
+			form.pwd.focus();
+			return;
+		
+		}else if(hangleCheck.test(form.memberPwd.value)){
+			alret("비밀번호에 한글을 사용할 수 없습니다");
+			form.pwd.focus();
+			return;
+		
+		}else if(form.memberPwd.value.search(/\s/) != -1){
+			alert("비밀번호에 공백 없이 입력해주세요");
+			form.pwd.focus();
+			return;
+			
+		}else if(form.memberPwd.value != form.pwdCheck.value){
+			alert("비밀번호를 확인해주세요");
+			form.pwd.focus();
+			return;
+			
+		}else if(!form.memberName.value){
+			alert("이름을 입력해주세요.");
+			form.name.focus();
+			return;
+		
+		}else if(!form.memberPhone.value){
+			alert("전화번호를 입력해주세요.");
+			form.phone.focus();
+			return;
+			
+		}else if(!form.memberZipcode.value){
+			alert("우편번호와 주소를 입력해주세요.")
+			form.zipcode.focus();
+			return;
+			
+		}else {
+			form.submit();
+		
+		}	
+	}
+
+</script>
 </html>
