@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 import com.laptopzone.service.MemberService;
 
 @WebServlet(urlPatterns = {"/memberLogin", "/memberJoin", "/memberIdCheck", "/memberLogout", "/idCheck", "/memberInfo", "/updateInfo",
-		"/memberUpdate"})
+		"/memberUpdate", "/memberDelete"})
 public class MemberController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -98,6 +98,19 @@ public class MemberController extends HttpServlet {
 			String memberAddress = request.getParameter("memberAddress");
 			String memberAddressDetail = request.getParameter("memberAddressDetail");
 			String memberAddressEtc = request.getParameter("memberAddressEtc");
+			
+			new MemberService().getMemberUpdate(memberId, memberPwd, memberName, memberPhone, 
+					memberZipcode, memberAddress, memberAddressDetail, memberAddressEtc);
+			
+			HttpSession session = request.getSession();
+			
+			view = "redirect:memberInfo?memberId="+session.getAttribute("memberId");
+		
+		}else if(com.equals("/memberDelete")) {
+			String memberid = request.getParameter("memberId");
+			new MemberService().getMemberDelete(memberid);
+			
+			view = "redirect:index.jsp";
 		}
 		
 		

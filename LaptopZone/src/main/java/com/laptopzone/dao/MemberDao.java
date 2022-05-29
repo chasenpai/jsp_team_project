@@ -9,6 +9,8 @@ import com.laptopzone.dto.MemberDto;
 
 
 
+
+
 public class MemberDao {
 
 	Connection conn;
@@ -170,20 +172,20 @@ public class MemberDao {
 	
 	//회원정보수정
 	public void memberUpdate(MemberDto dto) {
-		String query = "update member set member_pwd = ?, member_name = ?, member_phone = ?, member_zipcode = ?, member_address = ?"
-				+ "member_address_detail = ?, member_address_etc = ?";
+		String query = "update member set member_pwd = ?, member_name = ?, member_phone = ?, member_zipcode = ?, member_address = ?,"
+				+ "member_address_detail = ?, member_address_etc = ? where member_id = ?";
 
 		try {
 			conn = DBconnector.getConnection();
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, dto.getMemberId());
-			pstmt.setString(2, dto.getMemberPwd());
-			pstmt.setString(3, dto.getMemberName());
-			pstmt.setString(4, dto.getMemberPhone());
-			pstmt.setString(5, dto.getMemberZipcode());
-			pstmt.setString(6, dto.getMemberAddress());
-			pstmt.setString(7, dto.getMemberAddressDetail());
-			pstmt.setString(8, dto.getMemberAddressEtc());
+			pstmt.setString(1, dto.getMemberPwd());
+			pstmt.setString(2, dto.getMemberName());
+			pstmt.setString(3, dto.getMemberPhone());
+			pstmt.setString(4, dto.getMemberZipcode());
+			pstmt.setString(5, dto.getMemberAddress());
+			pstmt.setString(6, dto.getMemberAddressDetail());
+			pstmt.setString(7, dto.getMemberAddressEtc());
+			pstmt.setString(8, dto.getMemberId());
 			pstmt.executeUpdate();
 
 		} catch (SQLException e) {
@@ -203,6 +205,34 @@ public class MemberDao {
 	}
 	
 	
+	//회원탈퇴
+	public void memberDelete(String memberId) {
+			
+			String query = "delete from member where member_id = ?";
+			
+			try {
+				conn = DBconnector.getConnection();
+				pstmt = conn.prepareStatement(query);
+				pstmt.setString(1, memberId);
+				pstmt.executeUpdate();
+				
+			} catch(SQLException e) {
+				e.printStackTrace();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}finally {
+				try {
+					if(pstmt != null) {
+						pstmt.close();
+					}
+					if(conn != null) {
+						conn.close();
+					}
+				} catch(SQLException e) {
+					throw new RuntimeException(e);
+				}
+			}
+		}
 	
 	
 	

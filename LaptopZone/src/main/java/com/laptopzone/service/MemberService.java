@@ -41,4 +41,39 @@ public class MemberService {
 		MemberDto dto = new MemberDao().showMemberInfo(memberId);
 		return dto;
 	}
+	
+	//회원정보수정
+	public void getMemberUpdate(String memberId, String memberPwd, String memberName, String MemberPhone, 
+			String memberZipcode, String memberAddress, String memberAddressDetail, String memberAddressEtc) {
+		
+		MemberDto dto = new MemberDto();
+		dto.setMemberId(memberId);
+		dto.setMemberPwd(memberPwd);
+		dto.setMemberName(memberName);
+		dto.setMemberPhone(MemberPhone);
+		dto.setMemberZipcode(memberZipcode);
+		dto.setMemberAddress(memberAddress);
+		dto.setMemberAddressDetail(memberAddressDetail);
+		dto.setMemberAddressEtc(memberAddressEtc);
+		
+		new MemberDao().memberUpdate(dto);
+		
+	}
+	
+	//회원탈퇴
+	public void getMemberDelete(String memberId) {
+		new MemberDao().memberDelete(memberId);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

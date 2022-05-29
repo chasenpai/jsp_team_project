@@ -248,7 +248,7 @@ td{
 									</tr>
 								</table>
 							</div>
-							<input id="btn" type="button" value="수정완료" onclick="memberUpdate()"> 
+							<input id="btn" type="submit" value="수정완료"> 
 							<input type="button" value="취소" onclick="location.href='memberInfo?memberId=${memberId}'">
 							</form>
 						</c:when>
@@ -298,7 +298,7 @@ td{
 							<input id="btn" type="button" value="회원정보수정"
 								onclick="location.href='updateInfo?memberId=${memberId}'"> <input
 								type="button" value="회원탈퇴"
-								onclick="location.href='#'">
+								onclick="location.href='memberDelete?memberId=${memberId}'">
 						</c:otherwise>
 					</c:choose>
 					</div>
@@ -314,7 +314,7 @@ td{
 <script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
 <script> $(function() { $("#postcodify_search_button").postcodifyPopUp(); }); </script>
 <script>
-
+	/**
 	var form = document.updateForm;
 
 	function memberUpdate(){
@@ -374,6 +374,6 @@ td{
 		
 		}	
 	}
-
+**/
 </script>
 </html>
