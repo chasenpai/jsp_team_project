@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>장바구니</title>
+<title>제품 주문</title>
 <Style>
 * {
 	padding: 0;
@@ -84,12 +84,11 @@ ul a:hover {
 }
 
 #main:link {
-	text-decoration-line: none;
-}
-
-#main:visited {
-	color: white;
-}
+		text-decoration-line: none;
+	}
+	#main:visited{
+		color: white;
+	}
 
 section div {
 	width: 900px;
@@ -110,39 +109,18 @@ table, th, td {
 	clear: both;
 }
 
-.img {
-	width: 220px;
-	height: 220px;
+.th01 {
+	width: 150px;
+	height: 150px;
+}
+
+.th02 {
+	width: 450px;
 }
 
 img{
-	width: 210px;
-	height: 210px;
-}
-
-.name {
-	width: 420px;
-	height: 30px;
-}
-
-.spec {
-	width: 420px;
-	height: 140px;
-}
-
-.regdate {
-	width: 420px;
-	height: 30px;
-}
-
-.price {
-	width: 170px;
-	height: 200px;
-}
-
-.chk {
-	width: 70px;
-	height: 200px;
+	width: 145x;
+	height: 145px;
 }
 
 input[type="button"] {
@@ -168,6 +146,8 @@ table a:visited {
 	color: black;
 }
 
+
+
 #btn {
 	width: 400px;
 	height: 26px;
@@ -177,17 +157,52 @@ table a:visited {
 }
 
 p {
-	font-size: 120%;
+	font-size: 110%;
 	text-align: center;
 	font-weight: bold;
 }
-#plzLogin{
-	margin-top: 300px;
+
+.order {
+	width: 900px;
+}
+
+.order td {
+	height: 40px;
+}
+
+.td01 {
+	width: 350px;
+}
+
+input {
+	width: 350px;
+	height: 30px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	border: 1px solid black;;
+}
+
+input[type="button"] {
+	float: right;
+	width: 110px;
+	margin-right: 5px;
+	margin-top: 7px;
+}
+
+span {
+	margin-left: 110px;
+	line-height: 40px;
+}
+#zip{
+	margin-left: 0px;
+}
+.td02{
+	width:120px;
 }
 </Style>
 </head>
-<body>
 
+<body>
 	<div id="wrap">
 		<nav>
 			<h1 id="header"><a id="main" href="index">LAPTOP<br />ZONE</a></h1>
@@ -226,44 +241,69 @@ p {
 		</nav>
 
 		<section>
-			<c:choose>
-				<c:when test="${memberId ne null }">
-					<div>
-						<h1>장바구니</h1>
-						<div id="btn">
-							 <input type="button" value="전체 삭제" onclick="location.href='deleteCartAll?&memberId=${memberId }'"> 
-							 <input type="button" value="전체 구매" onclick="location.href='orderCart?memberId=${memberId}'">
-						</div>
-						
-						<c:forEach var="cart" items="${cartList }">
-							<table>
-								<tr>
-									<td class="img" rowspan="3"><img src="productImage/${cart.productImage }" alt="노트북 이미지" /></td>
-									<td class="name"><a href="#">${cart.productName}</a></td>
-									<td class="price" rowspan="3">${cart.productPrice}원</td>
-									<td class="chk" rowspan="3">
-										<input type="button" value="삭제" onclick="location.href='deleteCart?cartNum=${cart.cartNum}&memberId=${memberId }'">
-									</td>
-								</tr>
-								<tr>
-									<td class="spec">${cart.productDetail}</td>
-								</tr>
-								<tr>
-									<td class="regdate">${cart.productRegdate}</td>
-								</tr>
-							</table>
-							<br>
-						</c:forEach>
-						<br>
-						<p>총 상품금액 = ${sum }원</p>
-					</div>
-				</c:when>
-				<c:otherwise>
-					<h1 id="plzLogin">로그인을 해주세요.</h1>
-				</c:otherwise>
-			</c:choose>
+			<div>
+				<h1>제품 주문</h1>
+				<form action="insertOrder?memberId=${memberId }&productNum=${productDetail.productNum}&orderAmount=${orderAmount }&orderPrice=${productDetail.productPrice}" method="post">
+					<table>
+						<tr>
+							<th class="th01"><img src="productImage/${productDetail.productImage }" /></th>
+							<th class="th02">${productDetail.productName}</th>
+							<th class="th01">${productDetail.productPrice}원</th>
+							<th class="th01">수량 ${orderAmount }</th>
+						</tr>
+						<tr>
+							<th colspan="4">총 상품금액 = ${productDetail.productPrice}원</th>
+						</tr>
+					</table>
+					<br>
+					<table class="order">
+						<tr>
+							<td colspan="3"><span>주문자 정보</span> <input type="button"
+								value="회원정보와 동일"></td>
+						</tr>
+						<tr>
+							<td class="td01">아이디</td>
+							<td>${memberId }</td>
+							<td class="td02" rowspan="7"><input type="button" id="postcodify_search_button" value="검색"></td>
+						</tr>
+						<tr>
+							<td class="td01">수취인</td>
+							<td><input type="text" name="receiverName"></td>
+						</tr>
+						<tr>
+							<td class="td01">수취인 전화번호</td>
+							<td><input type="text" name="receiverPhone"></td>
+						</tr>
+						<tr>
+							<td class="td01">우편번호</td>
+							<td>
+								<input type="text" name="zipcode" class="postcodify_postcode5">
+							</td>
+						</tr>
+						<tr>
+							<td class="td01">주소</td>
+							<td><input type="text" name="address" class="postcodify_address"></td>
+						</tr>
+						<tr>
+							<td class="td01">상세주소</td>
+							<td><input type="text" name="addressDetail" class="postcodify_details"></td>
+						</tr>
+						<tr>
+							<td class="td01">기타주소</td>
+							<td><input type="text" name="addressEtc" class="postcodify_extra_info"></td>
+						</tr>
 
+					</table>
+					<input class="order" type="submit" value="주문하기"> 
+					<input type="button" value="취소" onclick="history.back()">
+				</form>
+			</div>
 		</section>
 	</div>
 </body>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
+<script> $(function() { $("#postcodify_search_button").postcodifyPopUp(); }); </script>
+
+
 </html>

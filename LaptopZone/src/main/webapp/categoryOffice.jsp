@@ -40,7 +40,8 @@
 	
 	section {
 		width: 1400px;
-		height: 980px;
+		height: auto;
+		min-height: 980px;
 		position: relative;
 		background-color: lightgray;
 		/*float: right;*/
@@ -91,7 +92,7 @@
 	
 	section div {
 		width: 900px;
-		margin: 200px auto;
+		margin: 100px auto;
 	}
 	
 	h1 {
@@ -109,6 +110,10 @@
 	}
 	
 	.img {
+		width: 220px;
+		height: 220px;
+	}
+	img{
 		width: 220px;
 		height: 220px;
 	}
@@ -228,18 +233,18 @@
 						<li><a href="#">회원관리</a>
 					</c:when>
 					<c:otherwise>
-						<li><a href="cart.jsp">장바구니</a></li>
-						<li><a href="order.jsp">주문목록</a></li>
-						<li><a href="userInfo.jsp">회원정보</a></li>
+						<li><a href="cartList?memberId=${memberId }">장바구니</a></li>
+						<li><a href="orderList?memberId=${memberId }">주문목록</a></li>
+						<li><a href="memberInfo?memberId=${memberId }">회원정보</a></li>
 					</c:otherwise>
 				</c:choose>
 				<li><p class="menu01">CATEGORY</p></li>
-				<li><a href="categoryAll.jsp">노트북 전체</a></li>
-				<li><a href="categoryApple.jsp">애플 맥북</a></li>
-				<li><a href="categoryUltra.jsp">울트라북</a></li>
-				<li><a href="categoryGaming.jsp">게이밍 노트북</a></li>
-				<li><a href="categoryOffice.jsp">사무용 노트북</a></li>
-				<li><a href="categoryEtc.jsp">노트북 주변기기</a></li>
+				<li><a href="categoryAll">노트북 전체</a></li>
+				<li><a href="category?productCategory=Macbook">애플 맥북</a></li>
+				<li><a href="category?productCategory=Ultrabook">울트라북</a></li>
+				<li><a href="category?productCategory=Gaming">게이밍 노트북</a></li>
+				<li><a href="category?productCategory=Office">사무용 노트북</a></li>
+				<li><a href="category?productCategory=Etc">노트북 주변기기</a></li>
 				<li><p class="menu01">BOARD</p></li>
 				<li><a href="notice.jsp">공지사항</a></li>
 				<li><a href="qna.jsp">Q&#38;A</a></li>
@@ -250,10 +255,10 @@
 			<div>
 				<h1>사무용 노트북</h1>
 				<ul id="category">
-					<li><a href="#">신상품</a></li>
-					<li><a href="#">인기상품</a></li>
-					<li><a href="#">최저가</a></li>
-					<li><a href="#">최고가</a></li>
+					<li><a href="category?productCategory=Office">신상품</a></li>
+					<li><a href="orderBy?productCategory=Office&where=product_views&order=desc">인기상품</a></li>
+					<li><a href="orderBy?productCategory=Office&where=product_price&order=asc">최저가</a></li>
+					<li><a href="orderBy?productCategory=Office&where=product_price&order=desc">최고가</a></li>
 				<c:if test="${memberId eq 'admin' }">
 					<li><a href="#">상품등록</a></li>	
 				</c:if>
@@ -265,36 +270,42 @@
 				
 				<c:choose>
 					<c:when test="${memberId eq 'admin' }">
-						<table>
-							<tr>
-								<td class="img" rowspan="3"><img src="" alt="노트북 이미지" /></td>
-								<td class="name"><a href="#">노트북 명</a></td>
-								<td class="price" rowspan="2">가격</td>
-								
-							</tr>
-							<tr>
-								<td class="spec">노트북스펙</td>
-							</tr>
-							<tr>
-								<td class="regdate">등록일자</td>
-								<td class="delete"><a href="#">삭제</a></td>
-							</tr>
-						</table>
+						<c:forEach var = "pdt" items="${productList }">
+							<table>
+								<tr>
+									<td class="img" rowspan="3"><img src="productImage/${pdt.productImage }" alt="노트북 이미지" /></td>
+									<td class="name"><a href="#">${pdt.productName }</a></td>
+									<td class="price" rowspan="2">${pdt.productPrice }원</td>
+									
+								</tr>
+								<tr>
+									<td class="spec">${pdt.productDetail }</td>
+								</tr>
+								<tr>
+									<td class="regdate">등록일자 ${pdt.productRegdate }</td>
+									<td class="delete"><a href="#">삭제</a></td>
+								</tr>
+							</table>
+							<br>
+						</c:forEach>
 					</c:when>
 					<c:otherwise>
-						<table>
-							<tr>
-								<td class="img" rowspan="3"><img src="" alt="노트북 이미지" /></td>
-								<td class="name"><a href="#">노트북 명</a></td>
-								<td class="price" rowspan="3">가격</td>
-							</tr>
-							<tr>
-								<td class="spec">노트북스펙</td>
-							</tr>
-							<tr>
-								<td class="regdate">등록일자</td>
-							</tr>
-						</table>
+						<c:forEach var = "pdt" items="${productList }">
+							<table>
+								<tr>
+									<td class="img" rowspan="3"><img src="productImage/${pdt.productImage }" alt="노트북 이미지" /></td>
+									<td class="name"><a href="productDetail?productNum=${pdt.productNum }">${pdt.productName }</a></td>
+									<td class="price" rowspan="3">${pdt.productPrice }원</td>
+								</tr>
+								<tr>
+									<td class="spec">${pdt.productDetail }</td>
+								</tr>
+								<tr>
+									<td class="regdate">등록일자 ${pdt.productRegdate }</td>
+								</tr>
+							</table>
+							<br>
+						</c:forEach>
 					</c:otherwise>	
 				</c:choose>
 			</div>

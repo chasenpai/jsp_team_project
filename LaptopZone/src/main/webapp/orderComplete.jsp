@@ -1,16 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>제품 상세</title>
+<title>주문 완료</title>
 <Style>
 * {
 	padding: 0;
 	margin: 0;
 }
+
 img {
 	display: block;
 }
@@ -39,6 +40,8 @@ nav {
 
 section {
 	width: 1400px;
+	height: auto;
+	min-height: 980px;
 	position: relative;
 	background-color: lightgray;
 	/*float: right;*/
@@ -92,8 +95,10 @@ section div {
 	margin: 100px auto;
 }
 
-table {
-	width: 900px;
+h1 {
+	font-size: 250%;
+	text-align: center;
+	margin-bottom: 50px;
 }
 
 table, th, td {
@@ -104,18 +109,28 @@ table, th, td {
 	clear: both;
 }
 
-.img {
-	width: 500px;
-	height: 500px;
+.th01 {
+	width: 150px;
+	height: 150px;
 }
 
-.name {
-	width: 400px;
-	height: 100px;
+.th02 {
+	width: 450px;
 }
 
-td {
-	height: 80px;
+img{
+	width: 145x;
+	height: 145px;
+}
+
+input[type="button"] {
+	width: 80px;
+	height: 26px;
+	border: 1px solid black;
+}
+
+input[type="button"]:hover {
+	background-color: darkgray;
 }
 
 table a {
@@ -131,47 +146,58 @@ table a:visited {
 	color: black;
 }
 
-input[type="button"] {
-	width: 100px;
-	height: 27px;
-	margin: 0px;
-	border: 1px solid black;
-}
 
-input[type="button"]:hover {
-	background-color: darkgray;
-}
 
-#detail {
-	height: 50px;
-}
-
-.detail {
-	height: 200px;
-}
-
-#review {
-	height: 50px;
-}
-
-#num {
-	width: 80px;
-}
-
-#title {
+#btn {
 	width: 400px;
+	height: 26px;
+	margin: 0px;
+	margin-bottom: 10px;
+	margin-top: 10px;
 }
 
-#writer {
-	width: 150px;
+p {
+	font-size: 110%;
+	text-align: center;
+	font-weight: bold;
 }
 
-#regdate {
-	width: 230px;
+.order {
+	width: 900px;
 }
 
-#views {
-	width: 80px;
+.order td {
+	height: 40px;
+}
+
+.td01 {
+	width: 350px;
+}
+
+input {
+	width: 350px;
+	height: 30px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	border: 1px solid black;;
+}
+
+input[type="button"] {
+	float: right;
+	width: 110px;
+	margin-right: 5px;
+	margin-top: 7px;
+}
+
+span {
+	margin-left: 110px;
+	line-height: 40px;
+}
+#zip{
+	margin-left: 0px;
+}
+.td02{
+	width:120px;
 }
 </Style>
 </head>
@@ -216,66 +242,52 @@ input[type="button"]:hover {
 
 		<section>
 			<div>
-			<form  action="addCart?productNum=${productDetail.productNum}&memberId=${memberId}" method="post" name="addCartForm">
-				<table>
-					<tr>
-						<td class="img" rowspan="6"><img src="productImage/${productDetail.productImage }" alt="노트북 이미지" /></td>
-						<td class="name">${productDetail.productName }</td>
-					</tr>
-					<tr>
-						<td>${productDetail.productPrice }원</td>
-					</tr>
-					<tr>
-						<td>무료배송</td>
-					</tr>
-					<tr>
-						<td>수량 <input type="number" name="amount" value="1"></td>
-					</tr>
-					<tr>
-						<td>
-							<input type="submit" value="바로구매" onclick="javascript: form.action='order?memberId=${memberId}&productNum=${productDetail.productNum }'"> 
-							<input type="button" value="장바구니" onclick="plzLogin()">
-						</td>
-					</tr>
-				</table>
-			</form>	
-				<br> <br>
-				<table>
-					<tr>
-						<th id="detail">제품상세</th>
-					</tr>
-					<tr>
-						<td class="detail">${productDetail.productDetail }</td>
-					</tr>
-				</table>
-				<br> <br>
-				<table>
-					<tr>
-						<th colspan="5" id="review">리뷰</th>
-					</tr>
-					<tr>
-						<th id="num">번호</th>
-						<th id="title">제목</th>
-						<th id="writer">작성자</th>
-						<th id="regdate">작성일자</th>
-						<th id="views">조회수</th>
-					</tr>
-				</table>
-				<br> <input type="button" value="글쓰기">
+				<h1>주문 완료</h1>
+					<table class="order">
+						<tr>
+							<td colspan="2">주문 상세</td>
+						</tr>
+						<tr>
+							<td class="td01">주문번호</td>
+							<td>${orderDetail.orderNum }</td>
+						</tr>
+						<tr>
+							<td class="td01">주문일자</td>
+							<td>${orderDetail.orderRegdate }</td>
+						</tr>
+						<tr>
+							<td class="td01">총 가격</td>
+							<td>${orderDetail.totalPrice }</td>
+						</tr>
+						<tr>
+							<td class="td01">수취인</td>
+							<td>${orderDetail.receiverName }</td>
+						</tr>
+						<tr>
+							<td class="td01">수취인 전화번호</td>
+							<td>${orderDetail.receiverPhone }</td>
+						</tr>
+						<tr>
+							<td class="td01">우편번호</td>
+							<td>${orderDetail.zipcode }</td>
+						</tr>
+						<tr>
+							<td class="td01">주소</td>
+							<td>${orderDetail.address }</td>
+						</tr>
+						<tr>
+							<td class="td01">상세주소</td>
+							<td>${orderDetail.addressDetail }</td>
+						</tr>
+						<tr>
+							<td class="td01">기타주소</td>
+							<td>${orderDetail.addressEtc }</td>
+						</tr>
+
+					</table>
+					<input type="button" value="메인으로 이동" onclick="location.href='index'"> 
 			</div>
 		</section>
 	</div>
 </body>
-<script>
-
-	function plzLogin(){
-		
-		if(${memberId eq null}){
-			alert("로그인을 해주세요.");
-		}else{
-			document.addCartForm.submit();
-		}
-	}
-
-</script>
 </html>

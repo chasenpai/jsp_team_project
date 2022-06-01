@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 import com.laptopzone.service.MemberService;
 
 @WebServlet(urlPatterns = {"/memberLogin", "/memberJoin", "/memberIdCheck", "/memberLogout", "/idCheck", "/memberInfo", "/updateInfo",
-		"/memberUpdate", "/memberDelete"})
+		"/memberUpdate", "/memberDelete", "/searchId", "/searchPwd"})
 public class MemberController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -37,7 +37,7 @@ public class MemberController extends HttpServlet {
 			if(result == 1) {
 				HttpSession session = request.getSession();
 				session.setAttribute("memberId", memberId);
-				view = "redirect:index.jsp";		
+				view = "redirect:index";		
 			}else {
 				request.setAttribute("failed", result);
 				view = "login.jsp";
@@ -48,7 +48,9 @@ public class MemberController extends HttpServlet {
 			HttpSession session = request.getSession();
 			session.removeAttribute("memberId");
 			
-			view = "logout.jsp";
+			request.setAttribute("logout", 1);
+			
+			view = "index";
 		
 		//아이디 중복체크
 		}else if(com.equals("/idCheck")) {
@@ -103,14 +105,50 @@ public class MemberController extends HttpServlet {
 					memberZipcode, memberAddress, memberAddressDetail, memberAddressEtc);
 			
 			HttpSession session = request.getSession();
+			//request.setAttribute("update", 1);
 			
 			view = "redirect:memberInfo?memberId="+session.getAttribute("memberId");
 		
+		//회원탈퇴
 		}else if(com.equals("/memberDelete")) {
-			String memberid = request.getParameter("memberId");
-			new MemberService().getMemberDelete(memberid);
+			String memberId = request.getParameter("memberId");
+			new MemberService().getMemberDelete(memberId);
 			
-			view = "redirect:index.jsp";
+			view = "redirect:index";
+			
+		//아이디 찾기	
+		}else if(com.equals("/searchId")) {
+			String memberName = request.getParameter("memberName");
+			String memberPhone = request.getParameter("memberPhone");
+			
+			String memberId = new MemberService().getSearchId(memberName, memberPhone);
+			
+			if(memberId != null) {
+				request.setAttribute("memberId", memberId);
+				request.setAttribute("findId", 1);
+				view = "search.jsp";
+			}else {
+				request.setAttribute("findId", 0);
+				view = "search.jsp";
+			}
+			
+			
+		//비밀번호 찾기	
+		}else if(com.equals("/searchPwd")) {
+			String memberId = request.getParameter("memberId");
+			String memberPhone = request.getParameter("memberPhone");
+			
+			String memberPwd = new MemberService().getSearchPwd(memberId, memberPhone);
+			
+			if(memberPwd != null) {
+				request.setAttribute("memberPwd", memberPwd);
+				request.setAttribute("findPwd", 1);
+				view = "search.jsp";
+			}else {
+				request.setAttribute("findPwd", 0);
+				view = "search.jsp";
+			}
+			
 		}
 		
 		

@@ -141,7 +141,7 @@
 <body>
 	<div id="wrap">
 		<nav>
-			<h1 id="header"><a id="main" href="index.jsp">LAPTOP<br />ZONE</a></h1>
+			<h1 id="header"><a id="main" href="index">LAPTOP<br />ZONE</a></h1>
 			<ul>
 				<c:choose>
 					<c:when test="${memberId ne null}">

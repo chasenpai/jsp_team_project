@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>회원 정보</title>
+<title>주문 목록</title>
 <Style>
 * {
 	padding: 0;
@@ -81,7 +81,6 @@ ul a:hover {
 	font-weight: bold;
 	margin-bottom: 20px;
 }
-
 #main:link {
 	text-decoration-line: none;
 }
@@ -91,8 +90,8 @@ ul a:hover {
 }
 
 section div {
-	width: 700px;
-	margin: 100px auto;
+	width: 900px;
+	margin: 200px auto;
 }
 
 h1 {
@@ -101,56 +100,62 @@ h1 {
 	margin-bottom: 50px;
 }
 
-#info {
-	margin: 0px auto;
-	margin-top: 20px;
-	width: 600px;
-	height: 600px;
-	padding: 0px;
-}
-
-input[type="button"] {
-	float: right;
-	margin-right: 25px;
-	margin-top: 10px;
-}
-
-input[type="button"] {
-	width: 100px;
-	height: 28px;
+table, th, td {
 	border: 1px solid black;
+	border-collapse: collapse;
+	background-color: white;
+	text-align: center;
+	clear: both;
 }
 
-input[type="button"]:hover {
-	background-color: darkgray;
+.img {
+	width: 220px;
+	height: 220px;
 }
 
-#btn {
-	margin-right: 49px;
+.name {
+	width: 460px;
+	height: 30px;
+}
+
+.spec {
+	width: 420px;
+	height: 140px;
+}
+
+.regdate {
+	width: 420px;
+	height: 30px;
+}
+
+.price {
+	width: 200px;
+	height: 200px;
+}
+
+table a {
+	font-weight: bold;
+	color: black;
+}
+
+table a:link {
+	text-decoration-line: none;
+}
+
+table a:visited {
+	color: black;
+}
+
+.order {
+	width: 220px;
+	height: 30px;
+}
+
+#date {
+	height: 30px;
 }
 #plzLogin{
 	margin-top: 300px;
-}
-
-table{
-	width:600px;
-	height: 600px;
-	background-color: white;
-	color: black;
-	text-align: center;
-}
-
-table, td, th{
-	border: 1px solid black;
-	border-collapse: collapse;
-}
-
-td{
-	height: 60px;
-	width: 450px;
-}
-.td01{
-	width: 100px;
 }
 </Style>
 </head>
@@ -159,7 +164,7 @@ td{
 	<div id="wrap">
 		<nav>
 			<h1 id="header">
-				<a id="main" href="index.jsp">LAPTOP<br />ZONE
+				<a id="main" href="index">LAPTOP<br />ZONE
 				</a>
 			</h1>
 			<ul>
@@ -180,7 +185,7 @@ td{
 					<c:otherwise>
 						<li><a href="cart.jsp">장바구니</a></li>
 						<li><a href="order.jsp">주문목록</a></li>
-						<li><a href="memberInfo?memberId=${memberId }">회원정보</a></li>
+						<li><a href="userInfo.jsp">회원정보</a></li>
 					</c:otherwise>
 				</c:choose>
 				<li><p class="menu01">CATEGORY</p></li>
@@ -200,53 +205,34 @@ td{
 			<c:choose>
 				<c:when test="${memberId ne null }">
 					<div>
-						<h1>회원 정보 수정</h1>
-						<div id="info">
-							<hr>
-							<table>
-								<tr>
-									<td class="td01">아이디</td>
-									<td>${updateInfo.memberId}</td>
-								</tr>
-								<tr>
-									<td class="td01">비밀번호</td>
-									<td>${updateInfo.memberPwd }</td>
-								</tr>
-								<tr>
-									<td class="td01">이름</td>
-									<td>${memberInfo.memberName }</td>
-								</tr>
-								<tr>
-									<td class="td01">전화번호</td>
-									<td>${memberInfo.memberPhone }</td>
-								</tr>
-								<tr>
-									<td class="td01">우편번호</td>
-									<td>${memberInfo.memberZipcode }</td>
-								</tr>
-								<tr>
-									<td class="td01">주소</td>
-									<td>${memberInfo.memberAddress }</td>
-								</tr>
-								<tr>
-									<td class="td01">상세주소</td>
-									<td>${memberInfo.memberAddressDetail }</td>
-								</tr>
-								<tr>
-									<td class="td01">기타주소</td>
-									<td>${memberInfo.memberAddressEtc }</td>
-								</tr>
-								<tr>
-									<td class="td01">가입일자</td>
-									<td>${memberInfo.regdate }</td>
-								</tr>
-							</table>
-						</div>
-						<input id="btn" type="button" value="회원정보 수정"
-							onclick="location.href='updateInfo'"> <input
-							type="button" value="회원 탈퇴"
-							onclick="location.href='memberDelete'">
-
+						<h1>주문 목록</h1>
+						<table>
+							<tr>
+								<td class="order">배송준비중 1</td>
+								<td class="order">배송중 0</td>
+								<td class="order">배송완료 2</td>
+								<td class="order">취소/반품/교환 1</td>
+							</tr>
+							<tr>
+								<td id="date" colspan="4"><input type="date"
+									name="startDate">&nbsp;&nbsp;<input type="date"
+									name="endDate"></td>
+							</tr>
+						</table>
+						<br>
+						<table>
+							<tr>
+								<td class="img" rowspan="3"><img src="" alt="노트북 이미지" /></td>
+								<td class="name"><a href="#">노트북 명</a></td>
+								<td class="price" rowspan="3">가격</td>
+							</tr>
+							<tr>
+								<td class="spec">노트북스펙</td>
+							</tr>
+							<tr>
+								<td class="regdate">등록일자</td>
+							</tr>
+						</table>
 					</div>
 				</c:when>
 				<c:otherwise>

@@ -80,14 +80,7 @@
 		margin-top: 350px;
 	}
 	
-	.banner>img {
-		width: 344px;
-		height: 350px;
-		float: left;
-		margin: 0 20px;
-		margin-bottom: 40px;
-		box-shadow: 3px 3px 5px darkgray;
-	}
+	
 	
 	#header {
 		color: white;
@@ -154,6 +147,15 @@
 		color: white;
 	}
 	
+	.banner img {
+		width: 344px;
+		height: 350px;
+		float: left;
+		margin: 0 20px;
+		margin-bottom: 40px;
+		box-shadow: 3px 3px 5px darkgray;
+	}
+	
 </Style>
 </head>
 <body>
@@ -176,18 +178,18 @@
 						<li><a href="#">회원관리</a>
 					</c:when>
 					<c:otherwise>
-						<li><a href="cart.jsp">장바구니</a></li>
-						<li><a href="order.jsp">주문목록</a></li>
+						<li><a href="cartList?memberId=${memberId }">장바구니</a></li>
+						<li><a href="orderList?memberId=${memberId }">주문목록</a></li>
 						<li><a href="memberInfo?memberId=${memberId }">회원정보</a></li>
 					</c:otherwise>
 				</c:choose>
 				<li><p class="menu01">CATEGORY</p></li>
-				<li><a href="categoryAll.jsp">노트북 전체</a></li>
-				<li><a href="categoryApple.jsp">애플 맥북</a></li>
-				<li><a href="categoryUltra.jsp">울트라북</a></li>
-				<li><a href="categoryGaming.jsp">게이밍 노트북</a></li>
-				<li><a href="categoryOffice.jsp">사무용 노트북</a></li>
-				<li><a href="categoryEtc.jsp">노트북 주변기기</a></li>
+				<li><a href="categoryAll">노트북 전체</a></li>
+				<li><a href="category?productCategory=Macbook">애플 맥북</a></li>
+				<li><a href="category?productCategory=Ultrabook">울트라북</a></li>
+				<li><a href="category?productCategory=Gaming">게이밍 노트북</a></li>
+				<li><a href="category?productCategory=Office">사무용 노트북</a></li>
+				<li><a href="category?productCategory=Etc">노트북 주변기기</a></li>
 				<li><p class="menu01">BOARD</p></li>
 				<li><a href="notice.jsp">공지사항</a></li>
 				<li><a href="qna.jsp">Q&#38;A</a></li>
@@ -198,15 +200,26 @@
 			<div class="main">
 				<img src="img/main01.png" alt="" />
 			</div>
-
+		
 			<div class="banner">
-				<img src="" alt="대체이미지" /> <img src="" alt="대체이미지" /> <img src=""
-					alt="대체이미지" /> <img src="" alt="대체이미지" /> <img src="" alt="대체이미지" />
-				<img src="" alt="대체이미지" /> <img src="" alt="대체이미지" /> <img src=""
-					alt="대체이미지" /> <img src="" alt="대체이미지" /> <img src="" alt="대체이미지" />
-				<img src="" alt="대체이미지" /> <img src="" alt="대체이미지" />
+			<c:forEach var="image" items="${imageList }">
+				<a href="productDetail?productNum=${image.productNum }"><img src="productImage/${image.productImage }" alt="대체이미지" /></a>
+			</c:forEach>
 			</div>
 		</section>
 	</div>
+
+<c:choose>
+	<c:when test="${logout == 1 }">
+		<script>
+		alert('로그아웃 되었습니다.');
+		</script>	
+	</c:when>
+	<c:when test="${delete == 1 }">
+		<script>
+		alert('회원탈퇴가 완료되었습니다.');
+		</script>	
+	</c:when>
+</c:choose>
 </body>
 </html>

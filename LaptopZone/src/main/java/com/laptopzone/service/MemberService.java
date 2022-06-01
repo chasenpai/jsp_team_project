@@ -65,7 +65,19 @@ public class MemberService {
 		new MemberDao().memberDelete(memberId);
 	}
 	
+	//아이디 찾기
+	public String getSearchId(String menberName, String memberPhone) {
+		String memberId = new MemberDao().searchId(menberName, memberPhone);
+		
+		return memberId;
+	}
 	
+	//비밀번호 찾기
+	public String getSearchPwd(String menberId, String memberPhone) {
+		String memberPwd = new MemberDao().searchPwd(menberId, memberPhone);
+			
+		return memberPwd;
+	}
 	
 	
 	

@@ -159,7 +159,7 @@ td{
 	<div id="wrap">
 		<nav>
 			<h1 id="header">
-				<a id="main" href="index.jsp">LAPTOP<br />ZONE
+				<a id="main" href="index">LAPTOP<br />ZONE
 				</a>
 			</h1>
 			<ul>
@@ -309,6 +309,11 @@ td{
 			</c:choose>
 		</section>
 	</div>
+<c:if test="${update == 1 }">
+	<script>
+		alert('회원정보가 수정되었습니다.');
+	</script>
+</c:if>	
 </body>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
