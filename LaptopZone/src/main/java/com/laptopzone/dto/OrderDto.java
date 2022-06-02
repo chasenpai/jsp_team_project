@@ -12,7 +12,35 @@ public class OrderDto {
 	private String addressDetail;
 	private String addressEtc;
 	private String orderRegdate;
+	private int productNum;
+	private String productName;
+	private int productPrice;
+	private int amount;
 	
+	public int getProductNum() {
+		return productNum;
+	}
+	public void setProductNum(int productNum) {
+		this.productNum = productNum;
+	}
+	public String getProductName() {
+		return productName;
+	}
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+	public int getProductPrice() {
+		return productPrice;
+	}
+	public void setProductPrice(int productPrice) {
+		this.productPrice = productPrice;
+	}
+	public int getAmount() {
+		return amount;
+	}
+	public void setAmount(int amount) {
+		this.amount = amount;
+	}
 	public int getOrderNum() {
 		return orderNum;
 	}

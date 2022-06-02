@@ -11,7 +11,7 @@ import com.laptopzone.service.CartService;
 import com.laptopzone.service.OrderService;
 import com.laptopzone.service.ProductService;
 
-@WebServlet(urlPatterns = {"/order", "/insertOrder", "/orderComplete", "/orderCart", "/insertCartOrder"})
+@WebServlet(urlPatterns = {"/order", "/insertOrder", "/orderComplete", "/orderCart", "/insertCartOrder", "/orderList"})
 public class OrderController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -47,6 +47,7 @@ public class OrderController extends HttpServlet {
 		}else if(com.equals("/insertOrder")) {
 			String memberId = request.getParameter("memberId");
 			int productNum = Integer.parseInt(request.getParameter("productNum"));
+			String productName = request.getParameter("productName");
 			int productPrice = Integer.parseInt(request.getParameter("orderPrice"));
 			int amount = Integer.parseInt(request.getParameter("orderAmount"));
 			int totalPrice = Integer.parseInt(request.getParameter("orderPrice"));
@@ -58,8 +59,7 @@ public class OrderController extends HttpServlet {
 			String addressEtc = request.getParameter("addressEtc");
 			
 			new OrderService().getInsertOrder(memberId, totalPrice, receiverName, 
-					receiverPhone, zipcode, address, addressDetail, addressEtc);
-			new OrderService().getInsertOrderDetail(productNum, productPrice, amount);
+					receiverPhone, zipcode, address, addressDetail, addressEtc, productNum, productName, productPrice, amount);
 			
 			view = "redirect:orderComplete?memberId="+memberId;
 		
@@ -74,9 +74,9 @@ public class OrderController extends HttpServlet {
 			String addressDetail = request.getParameter("addressDetail");
 			String addressEtc = request.getParameter("addressEtc");
 			
-			new OrderService().getInsertOrder(memberId, totalPrice, receiverName, 
+			new OrderService().getInsertCartOrder(memberId, totalPrice, receiverName, 
 					receiverPhone, zipcode, address, addressDetail, addressEtc);
-			new OrderService().getInsertCartOrderDetail(memberId);
+
 			
 			view = "redirect:orderComplete?memberId="+memberId;
 		
@@ -86,6 +86,13 @@ public class OrderController extends HttpServlet {
 			request.setAttribute("orderDetail", new OrderService().getOrderInfo(memberId));
 			
 			view = "orderComplete.jsp";
+		
+		//주문목록	
+		}else if(com.equals("/orderList")) {
+			String memberId = request.getParameter("memberId");
+			request.setAttribute("orderList", new OrderService().getOrderList(memberId));
+			
+			view = "orderList.jsp";
 			
 		}
 		

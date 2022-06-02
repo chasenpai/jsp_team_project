@@ -243,7 +243,7 @@ span {
 		<section>
 			<div>
 				<h1>제품 주문</h1>
-				<form action="insertOrder?memberId=${memberId }&productNum=${productDetail.productNum}&orderAmount=${orderAmount }&orderPrice=${productDetail.productPrice}" method="post">
+				<form action="insertOrder?memberId=${memberId }&productNum=${productDetail.productNum}&productName=${productDetail.productName}&orderAmount=${orderAmount }&orderPrice=${productDetail.productPrice}" method="post">
 					<table>
 						<tr>
 							<th class="th01"><img src="productImage/${productDetail.productImage }" /></th>

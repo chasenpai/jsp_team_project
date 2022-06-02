@@ -40,13 +40,14 @@ nav {
 
 section {
 	width: 1400px;
-	height: 980px;
+	height: auto; min-height : 980px;
 	position: relative;
 	background-color: lightgray;
 	/*float: right;*/
 	top: 0;
 	left: 200px;
 	overflow: hidden;
+	min-height: 980px;
 }
 
 #header {
@@ -81,6 +82,7 @@ ul a:hover {
 	font-weight: bold;
 	margin-bottom: 20px;
 }
+
 #main:link {
 	text-decoration-line: none;
 }
@@ -91,7 +93,7 @@ ul a:hover {
 
 section div {
 	width: 900px;
-	margin: 200px auto;
+	margin: 100px auto;
 }
 
 h1 {
@@ -108,29 +110,24 @@ table, th, td {
 	clear: both;
 }
 
-.img {
-	width: 220px;
-	height: 220px;
-}
-
-.name {
-	width: 460px;
-	height: 30px;
-}
-
-.spec {
-	width: 420px;
-	height: 140px;
-}
-
-.regdate {
-	width: 420px;
-	height: 30px;
-}
-
-.price {
+.reg{
 	width: 200px;
-	height: 200px;
+	height: 40px;
+}
+.name{
+	width: 400px;
+	height: 40px;
+}
+.price{
+	width: 200px;
+	height: 40px;
+}
+.amount{
+	width: 100px;
+	height: 40px;
+}
+td{
+	height: 40px;
 }
 
 table a {
@@ -146,15 +143,7 @@ table a:visited {
 	color: black;
 }
 
-.order {
-	width: 220px;
-	height: 30px;
-}
-
-#date {
-	height: 30px;
-}
-#plzLogin{
+#plzLogin {
 	margin-top: 300px;
 }
 </Style>
@@ -208,30 +197,19 @@ table a:visited {
 						<h1>주문 목록</h1>
 						<table>
 							<tr>
-								<td class="order">배송준비중 1</td>
-								<td class="order">배송중 0</td>
-								<td class="order">배송완료 2</td>
-								<td class="order">취소/반품/교환 1</td>
+								<th class="reg">주문일자</th>
+								<th class="name">상품명</th>
+								<th class="price">가격</th>
+								<th class="amount">수량</th>
 							</tr>
-							<tr>
-								<td id="date" colspan="4"><input type="date"
-									name="startDate">&nbsp;&nbsp;<input type="date"
-									name="endDate"></td>
-							</tr>
-						</table>
-						<br>
-						<table>
-							<tr>
-								<td class="img" rowspan="3"><img src="" alt="노트북 이미지" /></td>
-								<td class="name"><a href="#">노트북 명</a></td>
-								<td class="price" rowspan="3">가격</td>
-							</tr>
-							<tr>
-								<td class="spec">노트북스펙</td>
-							</tr>
-							<tr>
-								<td class="regdate">등록일자</td>
-							</tr>
+							<c:forEach var="orderList" items="${orderList }">
+								<tr>
+									<td>${orderList.orderRegdate }</td>
+									<td>${orderList.productName}</td>
+									<td>${orderList.productPrice }</td>
+									<td>${orderList.amount}</td>		
+								</tr>
+							</c:forEach>
 						</table>
 					</div>
 				</c:when>
