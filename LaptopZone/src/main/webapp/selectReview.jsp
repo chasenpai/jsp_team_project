@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>제품 상세</title>
+<title>Insert title here</title>
 <Style>
 * {
 	padding: 0;
@@ -39,6 +39,8 @@ nav {
 
 section {
 	width: 1400px;
+	height: auto;
+	min-height: 980px;
 	position: relative;
 	background-color: lightgray;
 	/*float: right;*/
@@ -92,44 +94,36 @@ section div {
 	margin: 100px auto;
 }
 
-
-table {
-	width: 900px;
-}
-
-table, th, td {
+table, tr , th, td{
 	border: 1px solid black;
 	border-collapse: collapse;
+}
+table{
+	width: 900px;
 	background-color: white;
-	text-align: center;
-	clear: both;
+}
+th{
+	width: 250px;
+	height: 40px;
+}
+td{
+	width: 650px;
+}
+h1 {
+		font-size: 250%;
+		text-align: center;
+		margin-bottom: 50px;
+	}
+input[type="text"]{
+	width: 630px;
+	height: 25px;
+	margin-left: 10px;
 }
 
-.img {
-	width: 500px;
-	height: 500px;
-}
-
-.name {
-	width: 400px;
-	height: 100px;
-}
-
-td {
-	height: 80px;
-}
-
-table a {
-	font-weight: bold;
-	color: black;
-}
-
-table a:link {
-	text-decoration-line: none;
-}
-
-table a:visited {
-	color: black;
+textarea{
+	width: 630px;
+	height: 450px;
+	margin: 10px;
 }
 
 input[type="button"] {
@@ -137,51 +131,18 @@ input[type="button"] {
 	height: 27px;
 	margin: 0px;
 	border: 1px solid black;
+	float: right;
+	margin-right: 20px;
 }
 
 input[type="button"]:hover {
 	background-color: darkgray;
 }
-
-#detail {
-	height: 50px;
+img{
+	width:400px;
+	height: 400px;
 }
 
-.detail {
-	height: 200px;
-}
-
-#review {
-	height: 50px;
-}
-
-#num {
-	width: 80px;
-	height: 40px;
-}
-
-#title {
-	width: 400px;
-	height: 40px;
-}
-
-#writer {
-	width: 150px;
-	height: 40px;
-}
-
-#regdate {
-	width: 230px;
-	height: 40px;
-}
-
-#views {
-	width: 80px;
-	height: 40px;
-}
-.review{
-	height: 40px;
-}
 </Style>
 </head>
 
@@ -225,82 +186,41 @@ input[type="button"]:hover {
 
 		<section>
 			<div>
-			<form  action="addCart?productNum=${productDetail.productNum}&memberId=${memberId}" method="post" name="addCartForm">
+				<h1>리뷰 보기</h1>
 				<table>
 					<tr>
-						<td class="img" rowspan="6"><img src="productImage/${productDetail.productImage }" alt="노트북 이미지" /></td>
-						<td class="name">${productDetail.productName }</td>
+						<th>제목</th>
+						<td>${selectReview.reviewTitle }</td>
 					</tr>
 					<tr>
-						<td>${productDetail.productPrice }원</td>
+						<th>작성자</th>
+						<td>${selectReview.reviewWriter }</td>
 					</tr>
 					<tr>
-						<td>무료배송</td>
+						<th>작성일자</th>
+						<td>${selectReview.reviewRegdate }</td>
 					</tr>
 					<tr>
-						<td>수량 <input type="number" name="amount" value="1"></td>
+						<th>조회수</th>
+						<td>${selectReview.reviewViews }</td>
 					</tr>
 					<tr>
-						<td>
-							<input type="submit" value="바로구매" onclick="javascript: form.action='order?memberId=${memberId}&productNum=${productDetail.productNum }'"> 
-							<input type="button" value="장바구니" onclick="plzLogin()">
-						</td>
+						<th>사진</th>
+						<td><img src="reviewImage/${selectReview.reviewImage }" alt="리뷰이미지"/></td>
+					</tr>
+					<tr>
+						<th>내용</th>
+						<td>${selectReview.reviewContent}</td>
 					</tr>
 				</table>
-			</form>	
-				<br> <br>
-				<table>
-					<tr>
-						<th id="detail">제품상세</th>
-					</tr>
-					<tr>
-						<td class="detail">${productDetail.productDetail }</td>
-					</tr>
-				</table>
-				<br> <br>
-				<table>
-					<tr>
-						<th colspan="5" id="review">리뷰</th>
-					</tr>
-					<tr>
-						<th id="title">제목</th>
-						<th id="writer">작성자</th>
-						<th id="regdate">작성일자</th>
-						<th id="views">조회수</th>
-					</tr>
-					<c:forEach var="review" items="${reviewList }">
-					<tr>
-						<td class="review"><a href="selectReview?reviewNum=${review.reviewNum }">${review.reviewTitle }</a></td>
-						<td class="review">${review.reviewWriter }</td>
-						<td class="review">${review.reviewRegdate }</td>
-						<td class="review">${review.reviewViews }</td>
-					</tr>
-					</c:forEach>
-				</table>
-				<br> <input type="button" value="글쓰기" onclick="goWrite()">
+				<br>
+				<c:if test="${selectReview.reviewWriter == memberId }">
+					<input type="button" value="수정하기" onclick="location.href='writeReview?reviewNum=${selectReview.reviewNum}'">
+					<input type="button" value="삭제하기" onclick="location.href='deleteReview?reviewNum=${selectReview.reviewNum}'">
+				</c:if>
+				<input class="btn" type="button" value="목록으로" onclick="history.back()">
 			</div>
 		</section>
 	</div>
 </body>
-<script>
-
-	function plzLogin(){
-		
-		if(${memberId eq null}){
-			alert("로그인을 해주세요.");
-		}else{
-			document.addCartForm.submit();
-		}
-	}
-	
-	function goWrite(){
-		
-		if(${memberId eq null}){
-			alert("로그인을 해주세요.");
-		}else{
-			location.href='writeReview?productNum=${productDetail.productNum}';
-		}
-	}
-
-</script>
 </html>

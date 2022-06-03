@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.laptopzone.service.ProductService;
+import com.laptopzone.service.ReviewService;
 
 @WebServlet(urlPatterns = {"/categoryAll", "/category", "/orderBy", "/orderByAll", "/productDetail"})
 public class ProductController extends HttpServlet {
@@ -59,6 +60,7 @@ public class ProductController extends HttpServlet {
 		}else if(com.equals("/productDetail")) {
 			int productNum = Integer.parseInt(request.getParameter("productNum"));
 			request.setAttribute("productDetail", new ProductService().getProductDetail(productNum));
+			request.setAttribute("reviewList", new ReviewService().getReviewList(productNum));
 			
 			view = "product.jsp";
 			

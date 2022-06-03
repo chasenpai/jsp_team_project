@@ -76,8 +76,7 @@ public class OrderController extends HttpServlet {
 			
 			new OrderService().getInsertCartOrder(memberId, totalPrice, receiverName, 
 					receiverPhone, zipcode, address, addressDetail, addressEtc);
-
-			
+		
 			view = "redirect:orderComplete?memberId="+memberId;
 		
 		//주문완료 페이지
