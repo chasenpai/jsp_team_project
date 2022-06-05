@@ -13,13 +13,13 @@ public class ReviewService {
 	}
 	
 	//리뷰 작성
-	public void getInsertReview(int productNum, String reviewTitle, String reviewWriter, String reviewContent, String reviewImage) {
+	public void getInsertReview(int productNum, String reviewTitle, String reviewWriter, String reviewContent) {
 		ReviewDto dto = new ReviewDto();
 		dto.setProductNum(productNum);
 		dto.setReviewTitle(reviewTitle);
 		dto.setReviewWriter(reviewWriter);
 		dto.setReviewContent(reviewContent);
-		dto.setReviewImage(reviewImage);
+		//dto.setReviewImage(reviewImage);
 		
 		new ReviewDao().insertReview(dto);	
 	}
@@ -39,16 +39,19 @@ public class ReviewService {
 	}
 	
 	//리뷰 수정
-	
-	public void getUpdateReview(int reviewNum, String reviewTitle, String reviewContent, String reviewImage) {
+	public void getUpdateReview(int reviewNum, String reviewTitle, String reviewContent) {
 		ReviewDto dto = new ReviewDto();
 		dto.setReviewNum(reviewNum);
 		dto.setReviewTitle(reviewTitle);
 		dto.setReviewContent(reviewContent);
-		dto.setReviewImage(reviewImage);
+		//dto.setReviewImage(reviewImage);
 		
 		new ReviewDao().updateReview(dto);	
 	}
 	
+	//리뷰 삭제
+	public void getDeleteReview(int reviewNum) {
+		new ReviewDao().deleteReview(reviewNum);
+	}
 	
 }

@@ -1,9 +1,9 @@
 package com.laptopzone.controller;
 
-import java.io.File;
+//import java.io.File;
 import java.io.IOException;
 
-import javax.servlet.ServletContext;
+//import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.laptopzone.service.ReviewService;
-import com.oreilly.servlet.MultipartRequest;
-import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+//import com.oreilly.servlet.MultipartRequest;
+//import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 @WebServlet(urlPatterns = {"/selectReview", "/writeReview", "/insertReview", "/updateReview", "/deleteReview"})
 public class ReviewController extends HttpServlet {
@@ -68,9 +68,10 @@ public class ReviewController extends HttpServlet {
 			}
 			
 			view = "writeReview.jsp";
-			
+		
+		//리뷰 등록	
 		}else if(com.equals("/insertReview")) {
-			
+			/**
 			ServletContext context = this.getServletContext();
 			String directory = context.getRealPath("/reviewImage");
 			MultipartRequest multi = new MultipartRequest(
@@ -79,21 +80,22 @@ public class ReviewController extends HttpServlet {
 					100 * 1024 * 1024,
 					"utf-8",
 					new DefaultFileRenamePolicy()
-					);
+					);**/
 			
-			int productNum = Integer.parseInt(multi.getParameter("productNum"));
-			String reviewTitle = multi.getParameter("reviewTitle");
-			String reviewWriter = multi.getParameter("reviewWriter");
-			String content = multi.getParameter("reviewContent");
-			File file = multi.getFile("reviewImage");
-			String reviewImage = file.getName();
+			int productNum = Integer.parseInt(request.getParameter("productNum"));
+			String reviewTitle = request.getParameter("reviewTitle");
+			String reviewWriter = request.getParameter("reviewWriter");
+			String content = request.getParameter("reviewContent");
+			//File file = multi.getFile("reviewImage");
+			//String reviewImage = file.getName();
 			
-			new ReviewService().getInsertReview(productNum, reviewTitle, reviewWriter, content, reviewImage);
+			new ReviewService().getInsertReview(productNum, reviewTitle, reviewWriter, content);
 			
 			view = "redirect:productDetail?productNum="+productNum;
 		
 		//리뷰 수정	
 		}else if(com.equals("/updateReview")) {
+			/**
 			ServletContext context = this.getServletContext();
 			String directory = context.getRealPath("/reviewImage");
 			MultipartRequest multi = new MultipartRequest(
@@ -102,17 +104,26 @@ public class ReviewController extends HttpServlet {
 					100 * 1024 * 1024,
 					"utf-8",
 					new DefaultFileRenamePolicy()
-					);
+					); **/
 			
-			int reviewNum = Integer.parseInt(multi.getParameter("reviewNum"));
-			String reviewTitle = multi.getParameter("reviewTitle");
-			String content = multi.getParameter("reviewContent");
-			File file = multi.getFile("reviewImage");
-			String reviewImage = null;
+			int reviewNum = Integer.parseInt(request.getParameter("reviewNum"));
+			String reviewTitle = request.getParameter("reviewTitle");
+			String content = request.getParameter("reviewContent");
+			//File file = multi.getFile("reviewImage");
+			//String reviewImage = 
 			
-			new ReviewService().getUpdateReview(reviewNum, reviewTitle, content, reviewImage);
+			new ReviewService().getUpdateReview(reviewNum, reviewTitle, content);
 			
 			view = "redirect:selectReview?reviewNum="+reviewNum;
+		
+		//리뷰 삭제
+		}else if(com.equals("/deleteReview")) {
+			int productNum = Integer.parseInt(request.getParameter("productNum"));
+			int reviewNum = Integer.parseInt(request.getParameter("reviewNum"));
+			new ReviewService().getDeleteReview(reviewNum);
+			
+			view = "redirect:productDetail?productNum="+productNum;
+				
 		}
 		
 		if(view.startsWith("redirect:")) {

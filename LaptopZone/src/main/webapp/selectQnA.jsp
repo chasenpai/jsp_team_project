@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>QnA 보기</title>
 <Style>
 * {
 	padding: 0;
@@ -186,41 +186,35 @@ img{
 
 		<section>
 			<div>
-				<h1>리뷰 보기</h1>
+				<h1>QnA 보기</h1>
 				<table>
 					<tr>
 						<th>제목</th>
-						<td>${selectReview.reviewTitle }</td>
+						<td>${selectQnA.qnaTitle }</td>
 					</tr>
 					<tr>
 						<th>작성자</th>
-						<td>${selectReview.reviewWriter }</td>
+						<td>${selectQnA.qnaWriter }</td>
 					</tr>
 					<tr>
 						<th>작성일자</th>
-						<td>${selectReview.reviewRegdate }</td>
+						<td>${selectQnA.qnaRegdate }</td>
 					</tr>
 					<tr>
 						<th>조회수</th>
-						<td>${selectReview.reviewViews }</td>
+						<td>${selectQnA.qnaViews }</td>
 					</tr>
-					<%-- 
-					<tr>
-						<th>사진</th>
-						<td><img src="reviewImage/${selectReview.reviewImage }" alt="리뷰이미지"/></td>
-					</tr>
-					 --%> 
 					<tr>
 						<th>내용</th>
-						<td>${selectReview.reviewContent}</td>
+						<td>${selectQnA.qnaContent }</td>
 					</tr>
 				</table>
 				<br>
-				<c:if test="${selectReview.reviewWriter == memberId }">
-					<input type="button" value="수정하기" onclick="location.href='writeReview?reviewNum=${selectReview.reviewNum}'">
-					<input type="button" value="삭제하기" onclick="location.href='deleteReview?reviewNum=${selectReview.reviewNum}&productNum=${selectReview.productNum }'">
+				<c:if test="${selectQnA.qnaWriter == memberId }">
+					<input type="button" value="수정하기" onclick="location.href='writeQnA?qnaNum=${selectQnA.qnaNum}'">
+					<input type="button" value="삭제하기" onclick="location.href='deleteQnA?qnaNum=${selectQnA.qnaNum}'">
 				</c:if>
-				<input class="btn" type="button" value="목록으로" onclick="history.back()">
+				<input class="btn" type="button" value="목록으로" onclick="location.href='qnaList'">
 			</div>
 		</section>
 	</div>

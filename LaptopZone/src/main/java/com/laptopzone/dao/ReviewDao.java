@@ -31,7 +31,7 @@ public class ReviewDao {
 				dto.setReviewTitle(rs.getString("review_title"));
 				dto.setReviewWriter(rs.getString("review_writer"));
 				dto.setReviewContent(rs.getString("review_content"));
-				dto.setReviewImage(rs.getString("review_image"));
+				//dto.setReviewImage(rs.getString("review_image"));
 				dto.setReviewRegdate(rs.getString("review_regdate"));
 				dto.setReviewViews(rs.getInt("review_views"));
 
@@ -60,7 +60,7 @@ public class ReviewDao {
 	
 	//리뷰 작성
 	public void insertReview(ReviewDto dto) {
-		String query = "insert into review values(review_num, ?, ?, ?, ?, ?, now(), 0)";
+		String query = "insert into review values(review_num, ?, ?, ?, ?, now(), 0)";
 
 		try {
 			conn = DBconnector.getConnection();
@@ -69,7 +69,7 @@ public class ReviewDao {
 			pstmt.setString(2, dto.getReviewTitle());
 			pstmt.setString(3, dto.getReviewWriter());
 			pstmt.setString(4, dto.getReviewContent());
-			pstmt.setString(5, dto.getReviewImage());
+			//pstmt.setString(5, dto.getReviewImage());
 			pstmt.executeUpdate();
 
 		} catch (SQLException e) {
@@ -106,7 +106,7 @@ public class ReviewDao {
 				dto.setReviewTitle(rs.getString("review_title"));
 				dto.setReviewWriter(rs.getString("review_writer"));
 				dto.setReviewContent(rs.getString("review_content"));
-				dto.setReviewImage(rs.getString("review_image"));
+				//dto.setReviewImage(rs.getString("review_image"));
 				dto.setReviewRegdate(rs.getString("review_regdate"));
 				dto.setReviewViews(rs.getInt("review_views"));
 			}
@@ -142,16 +142,15 @@ public class ReviewDao {
 	
 	//리뷰 수정
 	public void updateReview(ReviewDto dto) {
-		String query = "update review set review_title=?, review_content=?, review_image=? where review_num = ?";
+		String query = "update review set review_title=?, review_content=? where review_num = ?";
 
 		try {
 			conn = DBconnector.getConnection();
 			pstmt = conn.prepareStatement(query);
-			pstmt.setInt(1, dto.getProductNum());
-			pstmt.setString(2, dto.getReviewTitle());
-			pstmt.setString(3, dto.getReviewWriter());
-			pstmt.setString(4, dto.getReviewContent());
-			pstmt.setString(5, dto.getReviewImage());
+			pstmt.setString(1, dto.getReviewTitle());
+			pstmt.setString(2, dto.getReviewContent());
+			pstmt.setInt(3, dto.getReviewNum());
+			//pstmt.setString(5, dto.getReviewImage());
 			pstmt.executeUpdate();
 
 		} catch (SQLException e) {
@@ -170,6 +169,32 @@ public class ReviewDao {
 		}
 	}
 	
+	//리뷰 삭제
+		public void deleteReview(int reviewNum) {
+			
+			String query = "delete from review where review_num=?";
+			
+			try {
+				conn = DBconnector.getConnection();
+				pstmt = conn.prepareStatement(query);
+				pstmt.setInt(1, reviewNum);
+				pstmt.executeUpdate();
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					if(pstmt != null) {
+						pstmt.close();
+					}
+					if(conn != null) {
+						conn.close();
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	
 	
 	

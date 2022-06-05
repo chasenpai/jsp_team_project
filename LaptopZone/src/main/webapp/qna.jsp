@@ -112,7 +112,8 @@
 	}
 	
 	.title {
-		width: 250px;
+		width: 325px;
+	
 	}
 	
 	.writer {
@@ -171,8 +172,8 @@
 				<li><a href="categoryOffice.jsp">사무용 노트북</a></li>
 				<li><a href="categoryEtc.jsp">노트북 주변기기</a></li>
 				<li><p class="menu01">BOARD</p></li>
-				<li><a href="notice.jsp">공지사항</a></li>
-				<li><a href="qna.jsp">Q&#38;A</a></li>
+				<li><a href="noticeList">공지사항</a></li>
+				<li><a href="qnaList">Q&#38;A</a></li>
 			</ul>
 		</nav>
 
@@ -182,24 +183,43 @@
 
 				<table>
 					<tr>
-						<th class="num">번호</th>
 						<th class="title">제목</th>
 						<th class="writer">작성자</th>
 						<th class="regdate">작성시간</th>
 						<th class="views">조회수</th>
 					</tr>
-					<tr>
-						<td class="num">1</td>
-						<td class="title">공지1</td>
-						<td class="writer">관리자1</td>
-						<td class="regdate">2022.05.22</td>
-						<td class="views">10</td>
-					</tr>
+					<c:forEach var="qna" items="${qnaList }">
+						<tr>
+							<c:choose>
+								<c:when test="${qna.parentNum > 0 }">
+									<td class="title"><a href="selectQnA?qnaNum=${qna.qnaNum }"><span style="padding-left: 30px;">${qna.qnaTitle }</span></a></td>
+								</c:when>	
+								<c:otherwise>
+									<td class="title"><a href="selectQnA?qnaNum=${qna.qnaNum }">${qna.qnaTitle }</a></td>
+								</c:otherwise>
+							</c:choose>
+							
+							<td class="writer">${qna.qnaWriter }</td>
+							<td class="regdate">${qna.qnaRegdate }</td>
+							<td class="views">${qna.qnaViews }</td>
+						</tr>
+					</c:forEach>
 				</table>
 				<br>
-				<input type="button" value="글쓰기" onclick="">
+				<input type="button" value="글쓰기" onclick="goWrite()">
 			</div>
 		</section>
 	</div>
 </body>
+<script>
+	
+	function goWrite(){
+		
+		if(${memberId eq null}){
+			alert("로그인을 해주세요.");
+		}else{
+			location.href='writeQnA';
+		}
+	}
+</script>
 </html>

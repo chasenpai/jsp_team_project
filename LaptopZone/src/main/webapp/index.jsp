@@ -191,8 +191,8 @@
 				<li><a href="category?productCategory=Office">사무용 노트북</a></li>
 				<li><a href="category?productCategory=Etc">노트북 주변기기</a></li>
 				<li><p class="menu01">BOARD</p></li>
-				<li><a href="notice.jsp">공지사항</a></li>
-				<li><a href="qna.jsp">Q&#38;A</a></li>
+				<li><a href="noticeList">공지사항</a></li>
+				<li><a href="qnaList">Q&#38;A</a></li>
 			</ul>
 		</nav>
 

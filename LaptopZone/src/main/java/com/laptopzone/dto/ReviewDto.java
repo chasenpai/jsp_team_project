@@ -7,16 +7,16 @@ public class ReviewDto {
 	private String reviewTitle;
 	private String reviewWriter;
 	private String reviewContent;
-	private String reviewImage;
+//	private String reviewImage;
 	private String reviewRegdate;
 	private int reviewViews;
 	
-	public String getReviewImage() {
-		return reviewImage;
-	}
-	public void setReviewImage(String reviewImage) {
-		this.reviewImage = reviewImage;
-	}
+//	public String getReviewImage() {
+//		return reviewImage;
+//	}
+//	public void setReviewImage(String reviewImage) {
+//		this.reviewImage = reviewImage;
+//	}
 	public int getReviewNum() {
 		return reviewNum;
 	}

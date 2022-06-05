@@ -192,16 +192,18 @@ input[type="button"]:hover {
 					</c:otherwise>
 				</c:choose>
 				
-				<form action="${action }&reviewWriter=${memberId}" method="post" name="writeForm" enctype="multipart/form-data">
+				<form action="${action }&reviewWriter=${memberId}" method="post" name="writeForm">
 				<table>
 					<tr>
 						<th>제목</th>
 						<td><input type="text" name="reviewTitle" value="${selectReview.reviewTitle }"></td>
 					</tr>
+					<%--
 					<tr>
 						<th>사진첨부</th>
 						<td><input type="file" name="reviewImage" value="${selectReview.reviewImage }"></td>
 					</tr>
+					  --%>
 					<tr>
 						<th>내용</th>
 						<td><textarea rows="30" name="reviewContent">${selectReview.reviewContent }</textarea></td>

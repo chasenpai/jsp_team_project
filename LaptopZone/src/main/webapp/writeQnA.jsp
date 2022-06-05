@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>QnA 작성</title>
 <Style>
 * {
 	padding: 0;
@@ -138,10 +138,7 @@ input[type="button"] {
 input[type="button"]:hover {
 	background-color: darkgray;
 }
-img{
-	width:400px;
-	height: 400px;
-}
+
 
 </Style>
 </head>
@@ -186,43 +183,52 @@ img{
 
 		<section>
 			<div>
-				<h1>리뷰 보기</h1>
+				<c:choose>
+					<c:when test="${selectQnA.qnaNum > 0 }">	
+						<h1>QnA 수정</h1>
+					</c:when>
+					<c:otherwise>
+						<h1>QnA 작성</h1>
+					</c:otherwise>
+				</c:choose>
+				
+				<form action="${action }qnaWriter=${memberId}" method="post" name="writeForm">
 				<table>
 					<tr>
 						<th>제목</th>
-						<td>${selectReview.reviewTitle }</td>
+						<td><input type="text" name="qnaTitle" value="${selectQnA.qnaTitle }"></td>
 					</tr>
-					<tr>
-						<th>작성자</th>
-						<td>${selectReview.reviewWriter }</td>
-					</tr>
-					<tr>
-						<th>작성일자</th>
-						<td>${selectReview.reviewRegdate }</td>
-					</tr>
-					<tr>
-						<th>조회수</th>
-						<td>${selectReview.reviewViews }</td>
-					</tr>
-					<%-- 
-					<tr>
-						<th>사진</th>
-						<td><img src="reviewImage/${selectReview.reviewImage }" alt="리뷰이미지"/></td>
-					</tr>
-					 --%> 
 					<tr>
 						<th>내용</th>
-						<td>${selectReview.reviewContent}</td>
+						<td><textarea rows="30" name="qnaContent">${selectQnA.qnaContent }</textarea></td>
 					</tr>
 				</table>
 				<br>
-				<c:if test="${selectReview.reviewWriter == memberId }">
-					<input type="button" value="수정하기" onclick="location.href='writeReview?reviewNum=${selectReview.reviewNum}'">
-					<input type="button" value="삭제하기" onclick="location.href='deleteReview?reviewNum=${selectReview.reviewNum}&productNum=${selectReview.productNum }'">
-				</c:if>
-				<input class="btn" type="button" value="목록으로" onclick="history.back()">
+				<input type="button" value="작성완료" onclick="insert()">
+				<input class="btn" type="button" value="취소" onclick="history.back()">
+				</form>
 			</div>
 		</section>
 	</div>
 </body>
+<script>
+	
+	var form = document.writeForm;
+	
+	function insert(){
+		
+		if(!form.qnaTitle.value){
+			alert("제목을 입력하세요.");
+			form.qnaTitle.focus();
+			return;
+		}else if(!form.qnaContent.value){
+			alert("내용을 입력하세요.");
+			form.qnaContent.focus();
+			return;
+		}else{
+			form.submit();
+		}
+	}
+	
+</script>
 </html>
