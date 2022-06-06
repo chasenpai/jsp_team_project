@@ -164,11 +164,13 @@ img{
 				<c:choose>
 					<c:when test="${memberId eq 'admin' }">
 						<li><a href="#">회원관리</a>
+						<li><a href="qnaList">Q&#38;A</a></li>
 					</c:when>
 					<c:otherwise>
 						<li><a href="cartList?memberId=${memberId }">장바구니</a></li>
 						<li><a href="orderList?memberId=${memberId }">주문목록</a></li>
 						<li><a href="memberInfo?memberId=${memberId }">회원정보</a></li>
+						<li><a href="qnaList">Q&#38;A</a></li>
 					</c:otherwise>
 				</c:choose>
 				<li><p class="menu01">CATEGORY</p></li>
@@ -178,9 +180,6 @@ img{
 				<li><a href="category?productCategory=Gaming">게이밍 노트북</a></li>
 				<li><a href="category?productCategory=Office">사무용 노트북</a></li>
 				<li><a href="category?productCategory=Etc">노트북 주변기기</a></li>
-				<li><p class="menu01">BOARD</p></li>
-				<li><a href="notice.jsp">공지사항</a></li>
-				<li><a href="qna.jsp">Q&#38;A</a></li>
 			</ul>
 		</nav>
 

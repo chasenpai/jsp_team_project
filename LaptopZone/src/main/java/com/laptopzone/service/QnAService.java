@@ -51,4 +51,15 @@ public class QnAService {
 		new QnADao().deleteQnA(qnaNum);
 	}
 	
+	//QnA 답글 작성
+	public void getInsertReply(int parentNum, String qnaTitle, String qnaWriter, String qnaContent) {
+		QnADto dto = new QnADto();
+		dto.setParentNum(parentNum);
+		dto.setQnaTitle(qnaTitle);
+		dto.setQnaWriter(qnaWriter);
+		dto.setQnaContent(qnaContent);
+		
+		new QnADao().insertReply(dto);
+	}
+	
 }

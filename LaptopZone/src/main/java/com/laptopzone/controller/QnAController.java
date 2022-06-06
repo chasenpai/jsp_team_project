@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.laptopzone.service.QnAService;
 
-@WebServlet(urlPatterns = {"/qnaList", "/writeQnA", "/insertQnA", "/updateQnA", "/selectQnA", "/deleteQnA"})
+@WebServlet(urlPatterns = {"/qnaList", "/writeQnA", "/insertQnA", "/updateQnA", "/selectQnA", "/deleteQnA", "/replyQnA"})
 public class QnAController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -30,7 +30,7 @@ public class QnAController extends HttpServlet {
 			
 			view = "qna.jsp";
 		
-		
+		//QnA 보기
 		}else if(com.equals("/selectQnA")) {
 			int qnaNum = Integer.parseInt(request.getParameter("qnaNum"));
 			request.setAttribute("selectQnA", new QnAService().getSelectQnA(qnaNum));
@@ -39,18 +39,35 @@ public class QnAController extends HttpServlet {
 		
 		//QnA 작성 페이지	
 		}else if(com.equals("/writeQnA")) {
+			//새 글쓰기
 			String action = "insertQnA?";
 			int qnaNum = 0;
+			
+			//글 수정
 			String tmp = request.getParameter("qnaNum");
-			System.out.println(tmp);
+
 			if(tmp != null && tmp.length() > 0) {
 				qnaNum = Integer.parseInt(tmp);
-			}
-			
+			}	
+
 			if(qnaNum > 0) {
 				action = "updateQnA?qnaNum="+qnaNum+"&";
 				request.setAttribute("selectQnA", new QnAService().getSelectQnaUpate(qnaNum));
 			}
+			
+			//답글
+			String tmp2 = request.getParameter("parentNum");
+			int parentNum = 0;
+			
+			if(tmp2 != null && tmp2.length() > 0) {
+				parentNum = Integer.parseInt(tmp2);
+			}
+			
+			if(parentNum > 0) {
+				action = "replyQnA?parentNum="+parentNum+"&";
+				request.setAttribute("reply", "reply");
+			}
+			
 			request.setAttribute("action", action);
 			
 			view = "writeQnA.jsp";
@@ -79,6 +96,17 @@ public class QnAController extends HttpServlet {
 		}else if(com.equals("/deleteQnA")) {
 			int qnaNum = Integer.parseInt(request.getParameter("qnaNum"));
 			new QnAService().getDeleteQnA(qnaNum);
+			
+			view = "redirect:qnaList";
+		
+		//QnA 답글
+		}else if(com.equals("/replyQnA")) {
+			int parentNum = Integer.parseInt(request.getParameter("parentNum"));
+			String qnaTitle = request.getParameter("qnaTitle");
+			String qnaWriter = request.getParameter("qnaWriter");
+			String qnaContent = request.getParameter("qnaContent");
+			
+			new QnAService().getInsertReply(parentNum, qnaTitle, qnaWriter, qnaContent);
 			
 			view = "redirect:qnaList";
 		}

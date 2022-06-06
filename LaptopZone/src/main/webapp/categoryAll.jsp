@@ -232,11 +232,13 @@
 				<c:choose>
 					<c:when test="${memberId eq 'admin' }">
 						<li><a href="#">회원관리</a>
+						<li><a href="qnaList">Q&#38;A</a></li>
 					</c:when>
 					<c:otherwise>
 						<li><a href="cartList?memberId=${memberId }">장바구니</a></li>
 						<li><a href="orderList?memberId=${memberId }">주문목록</a></li>
 						<li><a href="memberInfo?memberId=${memberId }">회원정보</a></li>
+						<li><a href="qnaList">Q&#38;A</a></li>
 					</c:otherwise>
 				</c:choose>
 				<li><p class="menu01">CATEGORY</p></li>
@@ -246,9 +248,6 @@
 				<li><a href="category?productCategory=Gaming">게이밍 노트북</a></li>
 				<li><a href="category?productCategory=Office">사무용 노트북</a></li>
 				<li><a href="category?productCategory=Etc">노트북 주변기기</a></li>
-				<li><p class="menu01">BOARD</p></li>
-				<li><a href="notice.jsp">공지사항</a></li>
-				<li><a href="qna.jsp">Q&#38;A</a></li>
 			</ul>
 		</nav>
 
@@ -261,7 +260,7 @@
 					<li><a href="orderByAll?where=product_price&order=asc">최저가</a></li>
 					<li><a href="orderByAll?where=product_price&order=desc">최고가</a></li>
 				<c:if test="${memberId eq 'admin' }">
-					<li><a href="#">상품등록</a></li>	
+					<li><a href="writeProduct">상품등록</a></li>	
 				</c:if>
 				</ul>
 				<div id="right">
@@ -275,7 +274,7 @@
 							<table>
 								<tr>
 									<td class="img" rowspan="3"><img src="productImage/${pdt.productImage }" alt="노트북 이미지" /></td>
-									<td class="name"><a href="#">${pdt.productName }</a></td>
+									<td class="name"><a href="productDetail?productNum=${pdt.productNum }">${pdt.productName }</a></td>
 									<td class="price" rowspan="2">${pdt.productPrice }원</td>
 									
 								</tr>
@@ -284,7 +283,11 @@
 								</tr>
 								<tr>
 									<td class="regdate">등록일자 ${pdt.productRegdate }</td>
-									<td class="delete"><a href="#">삭제</a></td>
+									<td class="delete">
+										<a href="deleteProduct?productNum=${pdt.productNum }&productImage=${pdt.productImage }">삭제</a>
+										<a href="writeProduct?productNum=${pdt.productNum }">/수정</a>
+									</td>
+
 								</tr>
 							</table>
 							<br>
@@ -309,6 +312,61 @@
 						</c:forEach>
 					</c:otherwise>	
 				</c:choose>
+				<div style="width:800px; text-align: center;">
+					<c:forEach var="pgn" items="${pagination}">
+						<c:choose>
+							<c:when test="${views == 1 }">
+								<a href="orderByAll?where=product_views&order=desc&page=${pgn.pageNum }">
+									<c:choose>
+										<c:when test="${pgn.curPage }">
+											<u>${pgn.display }</u>
+										</c:when>
+										<c:otherwise>
+											${pgn.display }
+										</c:otherwise>
+									</c:choose>
+								</a>
+							</c:when>
+							<c:when test="${lowest == 1 }">
+								<a href="orderByAll?where=product_price&order=asc&page=${pgn.pageNum }">
+									<c:choose>
+										<c:when test="${pgn.curPage }">
+											<u>${pgn.display }</u>
+										</c:when>
+										<c:otherwise>
+											${pgn.display }
+										</c:otherwise>
+									</c:choose>
+								</a>
+							</c:when>
+							<c:when test="${highest == 1 }">
+								<a href="orderByAll?where=product_price&order=desc&page=${pgn.pageNum }">
+									<c:choose>
+										<c:when test="${pgn.curPage }">
+											<u>${pgn.display }</u>
+										</c:when>
+										<c:otherwise>
+											${pgn.display }
+										</c:otherwise>
+									</c:choose>
+								</a>
+							</c:when>
+							<c:otherwise>
+								<a href="categoryAll?page=${pgn.pageNum }">
+									<c:choose>
+										<c:when test="${pgn.curPage }">
+											<u>${pgn.display }</u>
+										</c:when>
+										<c:otherwise>
+											${pgn.display }
+										</c:otherwise>
+									</c:choose>
+								</a>
+							</c:otherwise>
+						</c:choose>
+						&nbsp;
+					</c:forEach>
+				</div>
 			</div>
 		</section>
 	</div>

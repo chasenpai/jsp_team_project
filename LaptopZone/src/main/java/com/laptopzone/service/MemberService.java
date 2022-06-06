@@ -1,5 +1,7 @@
 package com.laptopzone.service;
 
+import java.util.ArrayList;
+
 import com.laptopzone.dao.MemberDao;
 import com.laptopzone.dto.MemberDto;
 
@@ -79,7 +81,10 @@ public class MemberService {
 		return memberPwd;
 	}
 	
-	
+	//회원목록
+	public ArrayList<MemberDto> getMemberList(){
+		return new MemberDao().memberList();
+	}
 	
 	
 	

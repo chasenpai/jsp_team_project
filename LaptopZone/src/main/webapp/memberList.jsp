@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>QnA</title>
+<title>회원 목록</title>
 <Style>
 	* {
 		padding: 0;
@@ -108,27 +108,21 @@
 		text-align: center;
 	}
 	
-	.num {
-		width: 75px;
-	}
 	
-	.title {
-		width: 325px;
+	.id{
+		width: 200px;
 		height: 40px;
 	}
-	
-	.writer {
-		width: 125px;
+	.name{
+		width: 100px;
 		height: 40px;
 	}
-	
-	.regdate {
-		width: 175px;
+	.phone{
+		width: 200px;
 		height: 40px;
 	}
-	
-	.views {
-		width: 75px;
+	.regdate{
+		width: 200px;
 		height: 40px;
 	}
 	
@@ -183,47 +177,27 @@
 
 		<section>
 			<div>
-				<h1>Q&#38;A</h1>
+				<h1>회원목록</h1>
 
 				<table>
 					<tr>
-						<th class="title">제목</th>
-						<th class="writer">작성자</th>
-						<th class="regdate">작성시간</th>
-						<th class="views">조회수</th>
+						<th class="id">아이디</th>
+						<th class="name">이름</th>
+						<th class="phone">전화번호</th>
+						<th class="regdate">가입일</th>
 					</tr>
-					<c:forEach var="qna" items="${qnaList }">
+					<c:forEach var="memberList" items="${memberList }">
 						<tr>
-							<c:choose>
-								<c:when test="${qna.parentNum > 0 }">
-									<td class="title"><a href="selectQnA?qnaNum=${qna.qnaNum }"><span style="padding-left: 40px;">${qna.qnaTitle }</span></a></td>
-								</c:when>	
-								<c:otherwise>
-									<td class="title"><a href="selectQnA?qnaNum=${qna.qnaNum }">${qna.qnaTitle }</a></td>
-								</c:otherwise>
-							</c:choose>
-							
-							<td class="writer">${qna.qnaWriter }</td>
-							<td class="regdate">${qna.qnaRegdate }</td>
-							<td class="views">${qna.qnaViews }</td>
+							<td class="id"><a href="memberInfo?memberId=${memberList.memberId}">${memberList.memberId}</a></td>
+							<td class="name">${memberList.memberName}</td>
+							<td class="phone">${memberList.memberPhone}</td>
+							<td class="regdate">${memberList.regdate}</td>
 						</tr>
 					</c:forEach>
 				</table>
-				<br>
-				<input type="button" value="글쓰기" onclick="goWrite()">
+
 			</div>
 		</section>
 	</div>
 </body>
-<script>
-	
-	function goWrite(){
-		
-		if(${memberId eq null}){
-			alert("로그인을 해주세요.");
-		}else{
-			location.href='writeQnA';
-		}
-	}
-</script>
 </html>

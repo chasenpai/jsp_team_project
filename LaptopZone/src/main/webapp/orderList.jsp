@@ -152,10 +152,7 @@ table a:visited {
 <body>
 	<div id="wrap">
 		<nav>
-			<h1 id="header">
-				<a id="main" href="index">LAPTOP<br />ZONE
-				</a>
-			</h1>
+			<h1 id="header"><a id="main" href="index">LAPTOP<br />ZONE</a></h1>
 			<ul>
 				<li><p class="menu01">MEMBER</p></li>
 				<c:choose>
@@ -170,23 +167,22 @@ table a:visited {
 				<c:choose>
 					<c:when test="${memberId eq 'admin' }">
 						<li><a href="#">회원관리</a>
+						<li><a href="qnaList">Q&#38;A</a></li>
 					</c:when>
 					<c:otherwise>
-						<li><a href="cart.jsp">장바구니</a></li>
-						<li><a href="order.jsp">주문목록</a></li>
-						<li><a href="userInfo.jsp">회원정보</a></li>
+						<li><a href="cartList?memberId=${memberId }">장바구니</a></li>
+						<li><a href="orderList?memberId=${memberId }">주문목록</a></li>
+						<li><a href="memberInfo?memberId=${memberId }">회원정보</a></li>
+						<li><a href="qnaList">Q&#38;A</a></li>
 					</c:otherwise>
 				</c:choose>
 				<li><p class="menu01">CATEGORY</p></li>
-				<li><a href="categoryAll.jsp">노트북 전체</a></li>
-				<li><a href="categoryApple.jsp">애플 맥북</a></li>
-				<li><a href="categoryUltra.jsp">울트라북</a></li>
-				<li><a href="categoryGaming.jsp">게이밍 노트북</a></li>
-				<li><a href="categoryOffice.jsp">사무용 노트북</a></li>
-				<li><a href="categoryEtc.jsp">노트북 주변기기</a></li>
-				<li><p class="menu01">BOARD</p></li>
-				<li><a href="notice.jsp">공지사항</a></li>
-				<li><a href="qna.jsp">Q&#38;A</a></li>
+				<li><a href="categoryAll">노트북 전체</a></li>
+				<li><a href="category?productCategory=Macbook">애플 맥북</a></li>
+				<li><a href="category?productCategory=Ultrabook">울트라북</a></li>
+				<li><a href="category?productCategory=Gaming">게이밍 노트북</a></li>
+				<li><a href="category?productCategory=Office">사무용 노트북</a></li>
+				<li><a href="category?productCategory=Etc">노트북 주변기기</a></li>
 			</ul>
 		</nav>
 

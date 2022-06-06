@@ -4,8 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import com.laptopzone.dto.MemberDto;
+import com.laptopzone.dto.ProductDto;
 
 public class MemberDao {
 
@@ -310,7 +312,50 @@ public class MemberDao {
 		return memberPwd;
 	}
 	
-	
+	//회원 목록
+	public ArrayList<MemberDto> memberList(){
+		ArrayList<MemberDto> list = new ArrayList<MemberDto>();
+		String query = "select * from member order by regdate desc";
+		
+		try {
+			conn = DBconnector.getConnection();
+			pstmt = conn.prepareStatement(query);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				MemberDto dto = new MemberDto();
+				dto.setMemberId(rs.getString("member_id"));
+				dto.setMemberPwd(rs.getString("member_pwd"));
+				dto.setMemberName(rs.getString("member_name"));
+				dto.setMemberPhone(rs.getString("member_phone"));
+				dto.setMemberZipcode(rs.getString("member_zipcode"));
+				dto.setMemberAddress(rs.getString("member_address"));
+				dto.setMemberAddressDetail(rs.getString("member_address_detail"));
+				dto.setMemberAddressEtc(rs.getString("member_address_etc"));
+				dto.setRegdate(rs.getString("regdate"));
+
+				list.add(dto);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		return list;
+	}
 		
 	
 	

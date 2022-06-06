@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 import com.laptopzone.service.MemberService;
 
 @WebServlet(urlPatterns = {"/memberLogin", "/memberJoin", "/memberIdCheck", "/memberLogout", "/idCheck", "/memberInfo", "/updateInfo",
-		"/memberUpdate", "/memberDelete", "/searchId", "/searchPwd"})
+		"/memberUpdate", "/memberDelete", "/searchId", "/searchPwd", "/memberList"})
 public class MemberController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -148,7 +148,12 @@ public class MemberController extends HttpServlet {
 				request.setAttribute("findPwd", 0);
 				view = "search.jsp";
 			}
+		
+		//회원 목록	
+		}else if(com.equals("/memberList")) {
+			request.setAttribute("memberList", new MemberService().getMemberList());
 			
+			view = "memberList.jsp";
 		}
 		
 		
