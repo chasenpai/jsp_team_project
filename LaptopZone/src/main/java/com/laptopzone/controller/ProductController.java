@@ -2,6 +2,7 @@ package com.laptopzone.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Enumeration;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -15,7 +16,8 @@ import com.laptopzone.service.ReviewService;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
-@WebServlet(urlPatterns = {"/categoryAll", "/category", "/orderBy", "/orderByAll", "/productDetail", "/writeProduct", "/insertProduct", "/deleteProduct"})
+@WebServlet(urlPatterns = {"/categoryAll", "/category", "/orderBy", "/orderByAll", "/productDetail", "/writeProduct", "/insertProduct", "/deleteProduct",
+		"/searchProduct", "/updateProduct"})
 public class ProductController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -126,8 +128,19 @@ public class ProductController extends HttpServlet {
 		//제품 상세
 		}else if(com.equals("/productDetail")) {
 			int productNum = Integer.parseInt(request.getParameter("productNum"));
+			
+			String tmp = request.getParameter("page");
+			
+			int pageNum;
+			
+			if(tmp != null && tmp.length() > 0) {
+				pageNum = Integer.parseInt(tmp);
+			}else {
+				pageNum = 1;
+			}
 			request.setAttribute("productDetail", new ProductService().getProductDetail(productNum));
-			request.setAttribute("reviewList", new ReviewService().getReviewList(productNum));
+			request.setAttribute("reviewList", new ReviewService().getReviewList(productNum, pageNum));
+			request.setAttribute("pagination", new ReviewService().getPagination(pageNum, productNum));
 			
 			view = "product.jsp";
 			
@@ -168,18 +181,55 @@ public class ProductController extends HttpServlet {
 			String productCompany = multi.getParameter("productCompany");
 			int productPrice = Integer.parseInt(multi.getParameter("productPrice"));
 			int productStock = Integer.parseInt(multi.getParameter("productStock"));
-			String productDetial = multi.getParameter("productDetail");
+			String productDetail = multi.getParameter("productDetail");
 			File file = multi.getFile("productImage");
 			String productImage = file.getName();
 			
-			new ProductService().getInsertProduct(productCatogory, productName, productCompany, productPrice, productStock, productDetial, productImage);
+			new ProductService().getInsertProduct(productCatogory, productName, productCompany, productPrice, productStock, productDetail, productImage);
 			System.out.println(directory);
 			
 			view = "redirect:categoryAll";
-			
+		
+		//제품 수정
 		}else if(com.equals("/updateProduct")) {
+			ServletContext context = request.getSession().getServletContext();
+			String directory = context.getRealPath("/productImage");
+			MultipartRequest multi = new MultipartRequest(
+					request,
+					directory,
+					100 * 1024 * 1024,
+					"utf-8",
+					new DefaultFileRenamePolicy());
+			int productNum = Integer.parseInt(multi.getParameter("productNum"));
+			String productCatogory = multi.getParameter("productCategory");
+			String productName = multi.getParameter("productName");
+			String productCompany = multi.getParameter("productCompany");
+			int productPrice = Integer.parseInt(multi.getParameter("productPrice"));
+			int productStock = Integer.parseInt(multi.getParameter("productStock"));
+			String productDetail = multi.getParameter("productDetail");
+			String origninalImage = multi.getParameter("originalImage");
+			String productImage = null;
 			
+			File file = multi.getFile("productImage");
 			
+			if(file != null) {
+				productImage = file.getName();
+				System.out.println(productImage);
+			}
+			
+			new ProductService().getUpdateProduct(productCatogory, productName, productCompany, 
+					productPrice, productStock, productDetail, productImage, productNum);
+			
+			context = request.getSession().getServletContext();
+			directory = context.getRealPath("/productImage/");
+			file = new File(directory+origninalImage);
+			if(file.exists()) {
+				file.delete();
+			}
+			
+			view = "redirect:categoryAll";
+			
+		//제품 삭제
 		}else if(com.equals("/deleteProduct")) {
 			int productNum = Integer.parseInt(request.getParameter("productNum"));
 			String productImage = request.getParameter("productImage");
@@ -188,15 +238,45 @@ public class ProductController extends HttpServlet {
 			String directory = context.getRealPath("/productImage/");
 			File file = new File(directory+productImage);
 			
-			if(file.exists()) {
-				file.delete();
-			}
+			
 			
 			new ProductService().getDeleteProduct(productNum);
 			
 			view = "redirect:categoryAll";
-		}
 		
+		//제품 검색
+		}else if(com.equals("/searchProduct")) {
+			String productName = request.getParameter("productName");
+			String where = request.getParameter("where");
+			String order = request.getParameter("order");
+			String tmp = request.getParameter("page");
+
+			int pageNum;
+			
+			if(tmp != null && tmp.length() > 0) {
+				pageNum = Integer.parseInt(tmp);
+			}else {
+				pageNum = 1;
+			}
+			System.out.println(productName);
+			System.out.println(where);
+			System.out.println(order);
+			if(where != null) {
+				request.setAttribute("pagination", new ProductService().getSearchPagination(pageNum, productName));
+				request.setAttribute("searchList", new ProductService().getSearchProduct(pageNum, productName, where, order));
+				request.setAttribute("productName", productName);
+			}else {
+				request.setAttribute("pagination", new ProductService().getSearchPagination(pageNum, productName));
+				request.setAttribute("searchList", new ProductService().getSearchProduct(pageNum, productName));
+				request.setAttribute("productName", productName);
+			}
+			
+
+			
+			
+			view = "searchProduct.jsp";
+			
+		}
 		
 		if(view.startsWith("redirect:")) {
 			response.sendRedirect(view.substring(9));

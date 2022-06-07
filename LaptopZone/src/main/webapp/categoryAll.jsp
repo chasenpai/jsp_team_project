@@ -187,6 +187,17 @@
 	#right input[type="button"]:hover {
 		background-color: darkgray;
 	}
+	#right input[type="submit"] {
+		float: right;
+		width: 40px;
+		height: 25px;
+		margin-top: 24px;
+		border:1px solid black;
+	}
+	
+	#right input[type="submit"]:hover {
+		background-color: darkgray;
+	}
 	
 	table a {
 		font-weight: bold;
@@ -231,7 +242,7 @@
 				</c:choose>
 				<c:choose>
 					<c:when test="${memberId eq 'admin' }">
-						<li><a href="#">회원관리</a>
+						<li><a href="memberList">회원관리</a>
 						<li><a href="qnaList">Q&#38;A</a></li>
 					</c:when>
 					<c:otherwise>
@@ -264,8 +275,10 @@
 				</c:if>
 				</ul>
 				<div id="right">
-					<input type="text" name="search"> 
-					<input type="button"value="검색">
+					<form action="searchProduct" method="post">
+						<input type="text" name="productName"> 
+						<input type="submit"value="검색">
+					</form>
 				</div>
 				
 				<c:choose>

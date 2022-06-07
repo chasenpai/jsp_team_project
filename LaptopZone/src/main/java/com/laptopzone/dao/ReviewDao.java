@@ -13,15 +13,52 @@ public class ReviewDao {
 	PreparedStatement pstmt;
 	ResultSet rs;
 	
+	//리뷰 개수 얻기
+		public int getNumRecords(int productNum) {
+			int numRecords = 0;
+			String query = "select count(*) from review where product_num = ?";
+			
+			try {
+				conn = DBconnector.getConnection();
+				pstmt = conn.prepareStatement(query);
+				pstmt.setInt(1, productNum);
+				rs = pstmt.executeQuery();
+				
+				if(rs.next()) {
+					numRecords = rs.getInt(1);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}finally {
+				try {
+					if(rs != null) {
+						rs.close();
+					}
+					if(pstmt != null) {
+						pstmt.close();
+					}
+					if(conn != null) {
+						conn.close();
+					}
+				}catch(SQLException e) {
+					throw new RuntimeException(e);
+				}
+			}
+			return numRecords;
+		}
+	
+	
 	//리뷰 목록
-	public ArrayList<ReviewDto> reviewList(int productNum){
+	public ArrayList<ReviewDto> reviewList(int productNum, int start, int listSize){
 		ArrayList<ReviewDto> list = new ArrayList<ReviewDto>();
-		String query = "select * from review where product_num = ? order by review_num desc";
+		String query = "select * from review where product_num = ? order by review_num desc limit ?, ?";
 		
 		try {
 			conn = DBconnector.getConnection();
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, productNum);
+			pstmt.setInt(2, start);
+			pstmt.setInt(3, listSize);
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {

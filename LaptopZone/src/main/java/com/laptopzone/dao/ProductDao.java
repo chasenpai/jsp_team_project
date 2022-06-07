@@ -14,75 +14,73 @@ public class ProductDao {
 	PreparedStatement pstmt;
 	ResultSet rs;
 
-	
-	//전체 개수 얻기
+	// 전체 개수 얻기
 	public int getNumRecords() {
 		int numRecords = 0;
 		String query = "select count(*) from product";
-		
+
 		try {
 			conn = DBconnector.getConnection();
 			pstmt = conn.prepareStatement(query);
 			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
+
+			if (rs.next()) {
 				numRecords = rs.getInt(1);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			try {
-				if(rs != null) {
+				if (rs != null) {
 					rs.close();
 				}
-				if(pstmt != null) {
+				if (pstmt != null) {
 					pstmt.close();
 				}
-				if(conn != null) {
+				if (conn != null) {
 					conn.close();
 				}
-			}catch(SQLException e) {
+			} catch (SQLException e) {
 				throw new RuntimeException(e);
 			}
 		}
 		return numRecords;
 	}
-	
-	//특정 카테고리 제품 개수 얻기
+
+	// 특정 카테고리 제품 개수 얻기
 	public int getNumRecords(String category) {
 		int numRecords = 0;
 		String query = "select count(*) from product where product_category = ?";
-		
+
 		try {
 			conn = DBconnector.getConnection();
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, category);
 			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
+
+			if (rs.next()) {
 				numRecords = rs.getInt(1);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			try {
-				if(rs != null) {
+				if (rs != null) {
 					rs.close();
 				}
-				if(pstmt != null) {
+				if (pstmt != null) {
 					pstmt.close();
 				}
-				if(conn != null) {
+				if (conn != null) {
 					conn.close();
 				}
-			}catch(SQLException e) {
+			} catch (SQLException e) {
 				throw new RuntimeException(e);
 			}
 		}
 		return numRecords;
 	}
-	
-	
+
 	// 제품 전체 목록
 	public ArrayList<ProductDto> productList(int start, int listSize) {
 
@@ -133,7 +131,7 @@ public class ProductDao {
 	}
 
 	// 특정 카테고리 제품 목록
-	public ArrayList<ProductDto> productList(int start, int listSize,  String productCategory) {
+	public ArrayList<ProductDto> productList(int start, int listSize, String productCategory) {
 
 		ArrayList<ProductDto> list = new ArrayList<ProductDto>();
 		String query = "select * from product where product_category = ? order by product_num desc limit ?, ?";
@@ -234,7 +232,8 @@ public class ProductDao {
 	public ArrayList<ProductDto> sortList(int start, int listSize, String where, String productCategory, String order) {
 
 		ArrayList<ProductDto> list = new ArrayList<ProductDto>();
-		String query = "select * from product where product_category = ? order by " + where + " " + order + " limit ?, ?";
+		String query = "select * from product where product_category = ? order by " + where + " " + order
+				+ " limit ?, ?";
 
 		try {
 			conn = DBconnector.getConnection();
@@ -281,11 +280,11 @@ public class ProductDao {
 	}
 
 	// 제품 상세
-	public ProductDto productDetail(int productNum ,boolean incViews) {
+	public ProductDto productDetail(int productNum, boolean incViews) {
 		ProductDto dto = new ProductDto();
 		String query1 = "select * from product where product_num = ?";
 		String query2 = "update product set product_views = product_views + 1 where product_num = ?";
-		
+
 		try {
 			conn = DBconnector.getConnection();
 			pstmt = conn.prepareStatement(query1);
@@ -304,7 +303,7 @@ public class ProductDao {
 				dto.setProductRegdate(rs.getString("product_regdate"));
 				dto.setProductViews(rs.getInt("product_views"));
 			}
-			
+
 			rs.close();
 			pstmt.close();
 
@@ -466,4 +465,139 @@ public class ProductDao {
 			}
 		}
 	}
+
+	// 검색한 제품 수
+	public int getSearchRecords(String searchProduct) {
+		int numRecords = 0;
+		String query = "select count(*) from product where product_name like ?";
+
+		try {
+			conn = DBconnector.getConnection();
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, searchProduct);
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				numRecords = rs.getInt(1);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		return numRecords;
+	}
+
+	// 제품검색
+	public ArrayList<ProductDto> searchProduct(int start, int listSize, String searchProduct) {
+		ArrayList<ProductDto> list = new ArrayList<ProductDto>();
+		String query = "select * from product where product_name like ? limit ?, ?";
+
+		try {
+			conn = DBconnector.getConnection();
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, searchProduct);
+			pstmt.setInt(2, start);
+			pstmt.setInt(3, listSize);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				ProductDto dto = new ProductDto();
+				dto.setProductNum(rs.getInt("product_num"));
+				dto.setProductCategory(rs.getString("product_category"));
+				dto.setProductName(rs.getString("product_name"));
+				dto.setProductCompany(rs.getString("product_company"));
+				dto.setProductPrice(rs.getInt("product_price"));
+				dto.setProductStock(rs.getInt("product_stock"));
+				dto.setProductDetail(rs.getString("product_detail"));
+				dto.setProductImage(rs.getString("product_image"));
+				dto.setProductRegdate(rs.getString("product_regdate"));
+				dto.setProductViews(rs.getInt("product_views"));
+
+				list.add(dto);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		}
+
+		return list;
+	}
+
+	//검색 정렬
+	public ArrayList<ProductDto> searchProduct(int start, int listSize, String searchProduct, String where, String order) {
+		ArrayList<ProductDto> list = new ArrayList<ProductDto>();
+		String query = "select * from product where product_name like ? order by " + where + " " + order + " limit ?, ?";
+
+		try {
+			conn = DBconnector.getConnection();
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, searchProduct);
+			pstmt.setInt(2, start);
+			pstmt.setInt(3, listSize);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				ProductDto dto = new ProductDto();
+				dto.setProductNum(rs.getInt("product_num"));
+				dto.setProductCategory(rs.getString("product_category"));
+				dto.setProductName(rs.getString("product_name"));
+				dto.setProductCompany(rs.getString("product_company"));
+				dto.setProductPrice(rs.getInt("product_price"));
+				dto.setProductStock(rs.getInt("product_stock"));
+				dto.setProductDetail(rs.getString("product_detail"));
+				dto.setProductImage(rs.getString("product_image"));
+				dto.setProductRegdate(rs.getString("product_regdate"));
+				dto.setProductViews(rs.getInt("product_views"));
+
+				list.add(dto);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		}
+
+		return list;
+	}
+
 }

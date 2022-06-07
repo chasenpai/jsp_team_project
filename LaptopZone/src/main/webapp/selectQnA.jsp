@@ -163,7 +163,7 @@ img{
 				</c:choose>
 				<c:choose>
 					<c:when test="${memberId eq 'admin' }">
-						<li><a href="#">회원관리</a>
+						<li><a href="memberList">회원관리</a>
 						<li><a href="qnaList">Q&#38;A</a></li>
 					</c:when>
 					<c:otherwise>

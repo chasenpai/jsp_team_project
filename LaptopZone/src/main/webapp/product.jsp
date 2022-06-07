@@ -202,7 +202,7 @@ input[type="button"]:hover {
 				</c:choose>
 				<c:choose>
 					<c:when test="${memberId eq 'admin' }">
-						<li><a href="#">회원관리</a>
+						<li><a href="memberList">회원관리</a>
 						<li><a href="qnaList">Q&#38;A</a></li>
 					</c:when>
 					<c:otherwise>
@@ -277,6 +277,21 @@ input[type="button"]:hover {
 					</c:forEach>
 				</table>
 				<br> <input type="button" value="글쓰기" onclick="goWrite()">
+				<br>
+				<div style="width:800px; text-align: center;">
+				<c:forEach var="pgn" items="${pagination }">
+					<a href="productDetail?productNum=${productDetail.productNum }&page=${pgn.pageNum }">
+						<c:choose>
+							<c:when test="${pgn.curPage }">
+								<u>${pgn.display }</u>
+							</c:when>
+							<c:otherwise>
+								${pgn.display }
+							</c:otherwise>
+						</c:choose>
+					</a>&nbsp;	
+				</c:forEach>
+				</div>
 			</div>
 		</section>
 	</div>

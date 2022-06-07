@@ -230,7 +230,7 @@
 				</c:choose>
 				<c:choose>
 					<c:when test="${memberId eq 'admin' }">
-						<li><a href="#">회원관리</a>
+						<li><a href="memberList">회원관리</a>
 						<li><a href="qnaList">Q&#38;A</a></li>
 					</c:when>
 					<c:otherwise>
@@ -259,7 +259,7 @@
 					<li><a href="orderBy?productCategory=Office&where=product_price&order=asc">최저가</a></li>
 					<li><a href="orderBy?productCategory=Office&where=product_price&order=desc">최고가</a></li>
 				<c:if test="${memberId eq 'admin' }">
-					<li><a href="#">상품등록</a></li>	
+					<li><a href="writeProduct">상품등록</a></li>	
 				</c:if>
 				</ul>
 				<div id="right">

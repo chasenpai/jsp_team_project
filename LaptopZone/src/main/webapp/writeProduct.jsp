@@ -160,7 +160,7 @@ input[type="button"]:hover {
 				</c:choose>
 				<c:choose>
 					<c:when test="${memberId eq 'admin' }">
-						<li><a href="#">회원관리</a>
+						<li><a href="memberList">회원관리</a>
 						<li><a href="qnaList">Q&#38;A</a></li>
 					</c:when>
 					<c:otherwise>
@@ -228,6 +228,9 @@ input[type="button"]:hover {
 					<tr>
 						<th>제품상세</th>
 						<td><textarea rows="30" name="productDetail">${productDetail.productDetail }</textarea></td>
+					</tr>
+					<tr>
+						<td><input type="hidden" name="originalImage" value="${productDetail.productImage }"></td>
 					</tr>
 				</table>
 				<br>

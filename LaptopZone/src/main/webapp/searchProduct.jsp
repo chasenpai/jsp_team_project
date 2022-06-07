@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>게이밍 노트북</title>
+<title>제품 검색</title>
 <Style>
 	* {
 		padding: 0;
@@ -40,8 +40,9 @@
 	
 	section {
 		width: 1400px;
-		height:auto;
+		height: auto;
 		min-height: 980px;
+		overflow:scroll;
 		position: relative;
 		background-color: lightgray;
 		/*float: right;*/
@@ -114,8 +115,8 @@
 		height: 220px;
 	}
 	img{
-		width: 210px;
-		height: 210px;
+		width:210px;
+		height: 210px
 	}
 	
 	.name {
@@ -186,6 +187,17 @@
 	#right input[type="button"]:hover {
 		background-color: darkgray;
 	}
+	#right input[type="submit"] {
+		float: right;
+		width: 40px;
+		height: 25px;
+		margin-top: 24px;
+		border:1px solid black;
+	}
+	
+	#right input[type="submit"]:hover {
+		background-color: darkgray;
+	}
 	
 	table a {
 		font-weight: bold;
@@ -252,55 +264,61 @@
 
 		<section>
 			<div>
-				<h1>게이밍 노트북</h1>
+				<h1>제품 검색</h1>
 				<ul id="category">
-					<li><a href="category?productCategory=Gaming">신상품</a></li>
-					<li><a href="orderBy?productCategory=Gaming&where=product_views&order=desc">인기상품</a></li>
-					<li><a href="orderBy?productCategory=Gaming&where=product_price&order=asc">최저가</a></li>
-					<li><a href="orderBy?productCategory=Gaming&where=product_price&order=desc">최고가</a></li>
+					<li><a href="searchProduct?productName=${productName }">신상품</a></li>
+					<li><a href="searchProduct?productName=${productName }&where=product_views&order=desc">인기상품</a></li>
+					<li><a href="searchProduct?productName=${productName }&where=product_price&order=asc">최저가</a></li>
+					<li><a href="searchProduct?productName=${productName }&where=product_price&order=desc">최고가</a></li>
 				<c:if test="${memberId eq 'admin' }">
 					<li><a href="writeProduct">상품등록</a></li>	
 				</c:if>
 				</ul>
 				<div id="right">
-					<input type="text" name="search"> 
-					<input type="button"value="검색">
+					<form action="searchProduct" method="post">
+						<input type="text" name="productName"> 
+						<input type="submit"value="검색">
+					</form>
 				</div>
 				
 				<c:choose>
 					<c:when test="${memberId eq 'admin' }">
-						<c:forEach var = "pdt" items="${productList }">
+						<c:forEach var = "search" items="${searchList }">
 							<table>
 								<tr>
-									<td class="img" rowspan="3"><img src="productImage/${pdt.productImage }" alt="노트북 이미지" /></td>
-									<td class="name"><a href="#">${pdt.productName }</a></td>
-									<td class="price" rowspan="2">${pdt.productPrice }원</td>
+									<td class="img" rowspan="3"><img src="productImage/${search.productImage }" alt="노트북 이미지" /></td>
+									<td class="name"><a href="productDetail?productNum=${search.productNum }">${search.productName }</a></td>
+									<td class="price" rowspan="2">${search.productPrice }원</td>
 									
 								</tr>
 								<tr>
-									<td class="spec">${pdt.productDetail }</td>
+									<td class="spec">${search.productDetail }</td>
 								</tr>
 								<tr>
-									<td class="regdate">등록일자 ${pdt.productRegdate }</td>
-									<td class="delete"><a href="#">삭제</a></td>
+									<td class="regdate">등록일자 ${search.productRegdate }</td>
+									<td class="delete">
+										<a href="deleteProduct?productNum=${pdt.productNum }&productImage=${search.productImage }">삭제</a>
+										<a href="writeProduct?productNum=${search.productNum }">/수정</a>
+									</td>
+
 								</tr>
 							</table>
 							<br>
 						</c:forEach>
 					</c:when>
 					<c:otherwise>
-						<c:forEach var = "pdt" items="${productList }">
+						<c:forEach var = "search" items="${searchList }">
 							<table>
 								<tr>
-									<td class="img" rowspan="3"><img src="productImage/${pdt.productImage }" alt="노트북 이미지" /></td>
-									<td class="name"><a href="productDetail?productNum=${pdt.productNum }">${pdt.productName }</a></td>
-									<td class="price" rowspan="3">${pdt.productPrice }원</td>
+									<td class="img" rowspan="3"><img src="productImage/${search.productImage }" alt="노트북 이미지" /></td>
+									<td class="name"><a href="productDetail?productNum=${search.productNum }">${search.productName }</a></td>
+									<td class="price" rowspan="3">${search.productPrice }원</td>
 								</tr>
 								<tr>
-									<td class="spec">${pdt.productDetail }</td>
+									<td class="spec">${search.productDetail }</td>
 								</tr>
 								<tr>
-									<td class="regdate">등록일자 ${pdt.productRegdate }</td>
+									<td class="regdate">등록일자 ${search.productRegdate }</td>
 								</tr>
 							</table>
 							<br>
@@ -309,9 +327,20 @@
 				</c:choose>
 				<div style="width:800px; text-align: center;">
 					<c:forEach var="pgn" items="${pagination}">
+								<a href="searchProduct?productName=${productName }&page=${pgn.pageNum }">
+									<c:choose>
+										<c:when test="${pgn.curPage }">
+											<u>${pgn.display }</u>
+										</c:when>
+										<c:otherwise>
+											${pgn.display }
+										</c:otherwise>
+									</c:choose>
+								</a>
+						<%-- 
 						<c:choose>
 							<c:when test="${views == 1 }">
-								<a href="orderBy?productCategory=Gaming&where=product_views&order=desc&page=${pgn.pageNum }">
+								<a href="searchProduct?productName=${search.productName }&where=product_views&order=desc&page=${pgn.pageNum }">
 									<c:choose>
 										<c:when test="${pgn.curPage }">
 											<u>${pgn.display }</u>
@@ -323,7 +352,7 @@
 								</a>
 							</c:when>
 							<c:when test="${lowest == 1 }">
-								<a href="orderBy?productCategory=Gaming&where=product_price&order=asc&page=${pgn.pageNum }">
+								<a href="searchProduct?productName=${search.productName }&where=product_price&order=asc&page=${pgn.pageNum }">
 									<c:choose>
 										<c:when test="${pgn.curPage }">
 											<u>${pgn.display }</u>
@@ -335,7 +364,7 @@
 								</a>
 							</c:when>
 							<c:when test="${highest == 1 }">
-								<a href="orderBy?productCategory=Gaming&where=product_price&order=desc&page=${pgn.pageNum }">
+								<a href="searchProduct?productName=${search.productName }&where=product_price&order=desc&page=${pgn.pageNum }">
 									<c:choose>
 										<c:when test="${pgn.curPage }">
 											<u>${pgn.display }</u>
@@ -347,7 +376,7 @@
 								</a>
 							</c:when>
 							<c:otherwise>
-								<a href="category?productCategory=Gaming&page=${pgn.pageNum }">
+								<a href="searchProduct?productName=${productName }&page=${pgn.pageNum }">
 									<c:choose>
 										<c:when test="${pgn.curPage }">
 											<u>${pgn.display }</u>
@@ -359,6 +388,7 @@
 								</a>
 							</c:otherwise>
 						</c:choose>
+						--%>
 						&nbsp;
 					</c:forEach>
 				</div>
