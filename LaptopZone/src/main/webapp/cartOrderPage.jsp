@@ -189,10 +189,7 @@ input[type="button"] {
 	margin-top: 7px;
 }
 
-span {
-	margin-left: 110px;
-	line-height: 40px;
-}
+
 #zip{
 	margin-left: 0px;
 }
@@ -259,8 +256,8 @@ span {
 					<br>
 					<table class="order">
 						<tr>
-							<td colspan="3"><span>주문자 정보</span> <input type="button"
-								value="회원정보와 동일"></td>
+							<td colspan="3">주문자 정보
+							</td>
 						</tr>
 						<tr>
 							<td class="td01">아이디</td>
@@ -269,29 +266,29 @@ span {
 						</tr>
 						<tr>
 							<td class="td01">수취인</td>
-							<td><input type="text" name="receiverName"></td>
+							<td><input type="text" name="receiverName" value="${memberInfo.memberName }"></td>
 						</tr>
 						<tr>
 							<td class="td01">수취인 전화번호</td>
-							<td><input type="text" name="receiverPhone"></td>
+							<td><input type="text" name="receiverPhone" value="${memberInfo.memberPhone }"></td>
 						</tr>
 						<tr>
 							<td class="td01">우편번호</td>
 							<td>
-								<input type="text" name="zipcode" class="postcodify_postcode5">
+								<input type="text" name="zipcode" class="postcodify_postcode5" value="${memberInfo.memberZipcode}">
 							</td>
 						</tr>
 						<tr>
 							<td class="td01">주소</td>
-							<td><input type="text" name="address" class="postcodify_address"></td>
+							<td><input type="text" name="address" class="postcodify_address" value="${memberInfo.memberAddress}"></td>
 						</tr>
 						<tr>
 							<td class="td01">상세주소</td>
-							<td><input type="text" name="addressDetail" class="postcodify_details"></td>
+							<td><input type="text" name="addressDetail" class="postcodify_details" value="${memberInfo.memberAddressDetail}"></td>
 						</tr>
 						<tr>
 							<td class="td01">기타주소</td>
-							<td><input type="text" name="addressEtc" class="postcodify_extra_info"></td>
+							<td><input type="text" name="addressEtc" class="postcodify_extra_info" value="${memberInfo.memberAddressEtc}"></td>
 						</tr>
 
 					</table>

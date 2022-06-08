@@ -125,6 +125,21 @@ input[type="button"]:hover {
 	background-color: darkgray;
 }
 
+input[type="submit"] {
+	float: right;
+	margin-right: 25px;
+	margin-top: 10px;
+}
+
+input[type="submit"] {
+	width: 100px;
+	height: 28px;
+	border: 1px solid black;
+}
+
+input[type="submit"]:hover {
+	background-color: darkgray;
+}
 #btn {
 	margin-right: 49px;
 }
@@ -200,14 +215,14 @@ td{
 					<c:choose>
 						<c:when test="${updateCheck == 1 }">
 							<h1>회원정보수정</h1>
-							<form action="memberUpdate?memberId=${memberId }" method="post" name="updateForm">
+							<form action="memberUpdate?memberId=${updateInfo.memberId}" method="post" name="updateForm">
 							<div id="info">
 								<hr>
 								
 								<table>
 									<tr>
 										<td class="td01">아이디</td>
-										<td>${updateInfo.memberId}</td>
+										<td><input type="text" name="memberId" value="${updateInfo.memberId}" readonly></td>
 									</tr>
 									<tr>
 										<td class="td01">비밀번호</td>
@@ -244,8 +259,8 @@ td{
 									</tr>
 								</table>
 							</div>
-							<input id="btn" type="submit" value="수정완료"> 
-							<input type="button" value="취소" onclick="location.href='memberInfo?memberId=${memberId}'">
+							<input id="btn" type="button" value="수정완료" onclick="memberUpdate()"> 
+							<input type="button" value="취소" onclick="location.href='memberInfo?memberId=${updateInfo.memberId}'">
 							</form>
 						</c:when>
 						<c:otherwise>
@@ -292,9 +307,9 @@ td{
 								</table>
 							</div>
 							<input id="btn" type="button" value="회원정보수정"
-								onclick="location.href='updateInfo?memberId=${memberId}'"> <input
+								onclick="location.href='updateInfo?memberId=${memberInfo.memberId}'"> <input
 								type="button" value="회원탈퇴"
-								onclick="location.href='memberDelete?memberId=${memberId}'">
+								onclick="location.href='memberDelete?memberId=${memberInfo.memberId}'">
 						</c:otherwise>
 					</c:choose>
 					</div>
@@ -315,12 +330,15 @@ td{
 <script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
 <script> $(function() { $("#postcodify_search_button").postcodifyPopUp(); }); </script>
 <script>
-	/**
+	
 	var form = document.updateForm;
 
 	function memberUpdate(){
 		
-		if(form.memberPwd.value.length == 0){
+		let reg = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
+		let hangleCheck = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+		
+		if(!form.memberPwd.value){
 			alert("비밀번호를 입력해주세요.")
 			form.pwd.focus();
 			return;
@@ -350,12 +368,7 @@ td{
 			form.pwd.focus();
 			return;
 			
-		}else if(form.memberPwd.value != form.pwdCheck.value){
-			alert("비밀번호를 확인해주세요");
-			form.pwd.focus();
-			return;
-			
-		}else if(!form.memberName.value){
+		}else if(!form.memberName.value ){
 			alert("이름을 입력해주세요.");
 			form.name.focus();
 			return;
@@ -375,6 +388,6 @@ td{
 		
 		}	
 	}
-**/
+
 </script>
 </html>

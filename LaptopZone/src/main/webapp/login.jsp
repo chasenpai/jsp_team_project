@@ -67,7 +67,10 @@
 				<input type="text" name="memberId" placeholder=" ID"><br> <input
 					type="password" name="memberPwd" placeholder=" PASSWORD">
 			</div>
-			<br> <input type="checkbox" name="autoLogin"> 로그인 상태 유지<br>
+			<br> 
+			<%-- 
+			<input type="checkbox" name="autoLogin"> 로그인 상태 유지<br>
+			--%>
 			<input type="submit" value="로그인"><br>
 			<p>
 				<a href="search.jsp">아이디/비밀번호찾기</a>&nbsp;&nbsp;&nbsp;<a

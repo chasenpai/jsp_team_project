@@ -251,18 +251,27 @@ input[type="button"]:hover {
 			alert("상품명을 입력하세요.");
 			form.productName.focus();
 			return;
+			
+		}else if(!form.productCompany.value){
+			alert("제조사를 입력하세요.");
+			form.productPrice.focus();
+			return;
+		
 		}else if(!form.productPrice.value){
 			alert("가격을 입력하세요.");
 			form.productPrice.focus();
 			return;
+			
 		}else if(!form.productStock.value){
 			alert("수량을 입력하세요.");
 			form.productStock.focus();
 			return;	
+			
 		}else if(!form.productDetail.value){
 			alert("제품상세를 입력하세요.");
 			form.productDetail.focus();
 			return;	
+			
 		}else{
 			form.submit();
 		}

@@ -133,7 +133,7 @@ select {
 				</script>
 			</c:if>
 			<br> <input id="cancel" type="button" value="취소"
-				onclick="location.href='index.jsp'">
+				onclick="location.href='index'">
 		</div>
 	</div>
 </body>

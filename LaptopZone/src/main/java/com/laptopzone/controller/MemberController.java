@@ -103,18 +103,16 @@ public class MemberController extends HttpServlet {
 			
 			new MemberService().getMemberUpdate(memberId, memberPwd, memberName, memberPhone, 
 					memberZipcode, memberAddress, memberAddressDetail, memberAddressEtc);
+	
 			
-			HttpSession session = request.getSession();
-			//request.setAttribute("update", 1);
-			
-			view = "redirect:memberInfo?memberId="+session.getAttribute("memberId");
+			view = "redirect:memberInfo?memberId="+memberId;
 		
 		//회원탈퇴
 		}else if(com.equals("/memberDelete")) {
 			String memberId = request.getParameter("memberId");
 			new MemberService().getMemberDelete(memberId);
 			
-			view = "redirect:index";
+			view = "redirect:memberLogout";
 			
 		//아이디 찾기	
 		}else if(com.equals("/searchId")) {

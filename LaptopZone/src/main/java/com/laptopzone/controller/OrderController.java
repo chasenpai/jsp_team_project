@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.laptopzone.service.CartService;
+import com.laptopzone.service.MemberService;
 import com.laptopzone.service.OrderService;
 import com.laptopzone.service.ProductService;
 
@@ -28,10 +29,12 @@ public class OrderController extends HttpServlet {
 		
 		//주문하기
 		if(com.equals("/order")) {
+			String memberId = request.getParameter("memberId");
 			int orderAmount = Integer.parseInt(request.getParameter("amount"));
 			int productNum = Integer.parseInt(request.getParameter("productNum"));
 			request.setAttribute("productDetail", new ProductService().getProductDetail(productNum));
 			request.setAttribute("orderAmount", orderAmount);
+			request.setAttribute("memberInfo", new MemberService().getMemberInfo(memberId));
 			
 			view = "orderPage.jsp";
 			
@@ -40,7 +43,8 @@ public class OrderController extends HttpServlet {
 			String memberId = request.getParameter("memberId");
 			request.setAttribute("cartList", new CartService().getCartList(memberId));
 			request.setAttribute("sum", new CartService().getSumPrice(memberId));
-		
+			request.setAttribute("memberInfo", new MemberService().getMemberInfo(memberId));
+			
 			view = "cartOrderPage.jsp";
 		
 		//주문정보 입력
@@ -92,7 +96,7 @@ public class OrderController extends HttpServlet {
 			request.setAttribute("orderList", new OrderService().getOrderList(memberId));
 			
 			view = "orderList.jsp";
-			
+	
 		}
 		
 		
