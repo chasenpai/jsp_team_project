@@ -208,6 +208,20 @@ table a:visited {
 							</c:forEach>
 						</table>
 					</div>
+					<div style="width:800px; text-align: center;">
+						<c:forEach var="pgn" items="${pagination }">
+							<a href="orderList?memberId=${memberId }&page=${pgn.pageNum }">
+								<c:choose>
+									<c:when test="${pgn.curPage }">
+										<u>${pgn.display }</u>
+									</c:when>
+									<c:otherwise>
+										${pgn.display }
+									</c:otherwise>
+								</c:choose>
+							</a>&nbsp;	
+						</c:forEach>
+					</div>
 				</c:when>
 				<c:otherwise>
 					<h1 id="plzLogin">로그인을 해주세요.</h1>

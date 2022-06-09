@@ -64,7 +64,7 @@ public class OrderController extends HttpServlet {
 			
 			new OrderService().getInsertOrder(memberId, totalPrice, receiverName, 
 					receiverPhone, zipcode, address, addressDetail, addressEtc, productNum, productName, productPrice, amount);
-			
+
 			view = "redirect:orderComplete?memberId="+memberId;
 		
 		//장바구니 주문정보 입력
@@ -80,6 +80,8 @@ public class OrderController extends HttpServlet {
 			
 			new OrderService().getInsertCartOrder(memberId, totalPrice, receiverName, 
 					receiverPhone, zipcode, address, addressDetail, addressEtc);
+			
+			new CartService().getDeleteCartAll(memberId);
 		
 			view = "redirect:orderComplete?memberId="+memberId;
 		
@@ -93,7 +95,18 @@ public class OrderController extends HttpServlet {
 		//주문목록	
 		}else if(com.equals("/orderList")) {
 			String memberId = request.getParameter("memberId");
-			request.setAttribute("orderList", new OrderService().getOrderList(memberId));
+			
+			String tmp = request.getParameter("page");
+
+			int pageNum;
+			
+			if(tmp != null && tmp.length() > 0) {
+				pageNum = Integer.parseInt(tmp);
+			}else {
+				pageNum = 1;
+			}
+			request.setAttribute("pagination", new OrderService().getPagination(pageNum, memberId));
+			request.setAttribute("orderList", new OrderService().getOrderList(memberId , pageNum));
 			
 			view = "orderList.jsp";
 	

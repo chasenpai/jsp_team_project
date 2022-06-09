@@ -245,8 +245,8 @@ input[type="button"] {
 							<tr>
 								<th class="th01"><img src="productImage/${cart.productImage }" /></th>
 								<th class="th02">${cart.productName}</th>
-								<th class="th01">${cart.productPrice}원</th>
 								<th class="th01">수량 ${cart.amount }</th>
+								<th class="th01">${cart.productPrice * cart.amount}원</th>
 							</tr>
 						</c:forEach>
 							<tr>

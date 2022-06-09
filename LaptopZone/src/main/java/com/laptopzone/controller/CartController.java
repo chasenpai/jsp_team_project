@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.laptopzone.service.CartService;
+import com.laptopzone.service.ProductService;
 
 @WebServlet(urlPatterns = {"/addCart", "/cartList", "/deleteCart", "/deleteCartAll"})
 public class CartController extends HttpServlet {
@@ -37,7 +38,19 @@ public class CartController extends HttpServlet {
 		//장바구니 목록
 		}else if(com.equals("/cartList")) {
 			String memberId = request.getParameter("memberId");
-			request.setAttribute("cartList", new CartService().getCartList(memberId));
+			
+			String tmp = request.getParameter("page");
+
+			int pageNum;
+			
+			if(tmp != null && tmp.length() > 0) {
+				pageNum = Integer.parseInt(tmp);
+			}else {
+				pageNum = 1;
+			}
+
+			request.setAttribute("pagination", new CartService().getPagination(pageNum, memberId));
+			request.setAttribute("cartList", new CartService().getCartList(memberId, pageNum));
 			request.setAttribute("sum", new CartService().getSumPrice(memberId));
 			
 			view = "cart.jsp";

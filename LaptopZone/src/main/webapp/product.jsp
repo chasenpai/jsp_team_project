@@ -109,6 +109,10 @@ table, th, td {
 	width: 500px;
 	height: 500px;
 }
+img{
+	width: 490px;
+	height: 490px;
+}
 
 .name {
 	width: 400px;
@@ -140,6 +144,16 @@ input[type="button"] {
 }
 
 input[type="button"]:hover {
+	background-color: darkgray;
+}
+input[type="submit"] {
+	width: 100px;
+	height: 27px;
+	margin: 0px;
+	border: 1px solid black;
+}
+
+input[type="submit"]:hover {
 	background-color: darkgray;
 }
 

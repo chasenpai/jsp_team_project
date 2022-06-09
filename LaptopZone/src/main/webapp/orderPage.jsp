@@ -239,7 +239,7 @@ input[type="button"] {
 		<section>
 			<div>
 				<h1>제품 주문</h1>
-				<form action="insertOrder?memberId=${memberId }&productNum=${productDetail.productNum}&productName=${productDetail.productName}&orderAmount=${orderAmount }&orderPrice=${productDetail.productPrice}" method="post">
+				<form action="insertOrder?memberId=${memberId }&productNum=${productDetail.productNum}&productName=${productDetail.productName}&orderAmount=${orderAmount }&orderPrice=${productDetail.productPrice}" method="post" name="orderForm">
 					<table>
 						<tr>
 							<th class="th01"><img src="productImage/${productDetail.productImage }" /></th>
@@ -290,7 +290,7 @@ input[type="button"] {
 						</tr>
 
 					</table>
-					<input class="order" type="submit" value="주문하기"> 
+					<input type="button" value="주문하기" onclick="order()"> 
 					<input type="button" value="취소" onclick="history.back()">
 				</form>
 			</div>
@@ -300,6 +300,42 @@ input[type="button"] {
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
 <script> $(function() { $("#postcodify_search_button").postcodifyPopUp(); }); </script>
+<script>
 
+	var form = document.orderForm;
+	
+	function order(){
+		
+		if(!form.receiverName.value){
+			alert("수취인을 입력하세요.");
+			form.receiverName.focus();
+			return;
+		}else if(!form.receiverPhone.value){
+			alert("수취인 전화번호를 입력하세요.");
+			form.receiverPhone.focus();
+			return;
+		}else if(!form.zipcode.value){
+			alert("우편번호를 입력하세요.");
+			form.zipcode.focus();
+			return;
+		}else if(!form.address.value){
+			alert("주소를 입력하세요.");
+			form.address.focus();
+			return;
+		}else if(!form.addressDetail.value){
+			alert("상세주소를 입력하세요.");
+			form.addressDetail.focus();
+			return;
+		}else if(!form.addressEtc.value){
+			alert("기타주소를 입력하세요.");
+			form.addressEtc.focus();
+			return;
+		}else{
+			form.submit();
+		}
+		
+	}
+
+</script>
 
 </html>

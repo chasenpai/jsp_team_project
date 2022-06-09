@@ -134,6 +134,9 @@ img{
 	width: 420px;
 	height: 30px;
 }
+.amount{
+	width: 100px;
+}
 
 .price {
 	width: 170px;
@@ -239,7 +242,8 @@ p {
 								<tr>
 									<td class="img" rowspan="3"><img src="productImage/${cart.productImage }" alt="노트북 이미지" /></td>
 									<td class="name"><a href="#">${cart.productName}</a></td>
-									<td class="price" rowspan="3">${cart.productPrice}원</td>
+									<td class="amount" rowspan="3">수량 ${cart.amount }</td>
+									<td class="price" rowspan="3">${cart.productPrice * cart.amount}원</td>
 									<td class="chk" rowspan="3">
 										<input type="button" value="삭제" onclick="location.href='deleteCart?cartNum=${cart.cartNum}&memberId=${memberId }'">
 									</td>
@@ -255,6 +259,21 @@ p {
 						</c:forEach>
 						<br>
 						<p>총 상품금액 = ${sum }원</p>
+					</div>
+					
+					<div style="width:800px; text-align: center;">
+						<c:forEach var="pgn" items="${pagination }">
+							<a href="cartList?memberId=${memberId }&page=${pgn.pageNum }">
+								<c:choose>
+									<c:when test="${pgn.curPage }">
+										<u>${pgn.display }</u>
+									</c:when>
+									<c:otherwise>
+										${pgn.display }
+									</c:otherwise>
+								</c:choose>
+							</a>&nbsp;	
+						</c:forEach>
 					</div>
 				</c:when>
 				<c:otherwise>

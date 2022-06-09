@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import com.laptopzone.dto.CartDto;
 import com.laptopzone.dto.OrderDto;
-import com.laptopzone.dto.ProductDto;
+
 
 public class OrderDao {
 
@@ -16,13 +16,47 @@ public class OrderDao {
 	PreparedStatement pstmt;
 	ResultSet rs;
 
+	// 전체 개수 얻기
+	public int getNumRecords(String memberId) {
+		int numRecords = 0;
+		String query = "SELECT COUNT(*) FROM orders A, order_detail B WHERE A.order_num = B.order_num AND A.member_id = ?";
+
+		try {
+			conn = DBconnector.getConnection();
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, memberId);
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				numRecords = rs.getInt(1);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		return numRecords;
+	}
+
 	// 주문정보 입력
 	public void insertOrder(OrderDto dto) {
 		String query1 = "insert into orders values(order_num, ?, ?, ?, ?, ?, ?, ?, ?, now())";
 		String query2 = "select max(order_num) from orders";
 		String query3 = "insert order_detail values(order_detail_num, ?, ?, ?, ? ,?)";
 		int orderNum = 0;
-		
+
 		try {
 			conn = DBconnector.getConnection();
 			pstmt = conn.prepareStatement(query1);
@@ -35,9 +69,9 @@ public class OrderDao {
 			pstmt.setString(7, dto.getAddressDetail());
 			pstmt.setString(8, dto.getAddressEtc());
 			pstmt.executeUpdate();
-	
+
 			pstmt.close();
-			
+
 			pstmt = conn.prepareStatement(query2);
 			rs = pstmt.executeQuery();
 
@@ -46,7 +80,7 @@ public class OrderDao {
 
 			rs.close();
 			pstmt.close();
-			
+
 			pstmt = conn.prepareStatement(query3);
 			pstmt.setInt(1, orderNum);
 			pstmt.setInt(2, dto.getProductNum());
@@ -54,7 +88,6 @@ public class OrderDao {
 			pstmt.setInt(4, dto.getProductPrice());
 			pstmt.setInt(5, dto.getAmount());
 			pstmt.executeUpdate();
-
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -72,7 +105,7 @@ public class OrderDao {
 		}
 	}
 
-	//장바구니 주문정보 입력
+	// 장바구니 주문정보 입력
 	public void insertCartOrder(OrderDto dto, ArrayList<CartDto> cart) {
 		String query1 = "insert into orders values(order_num, ?, ?, ?, ?, ?, ?, ?, ?, now())";
 		String query2 = "select max(order_num) from orders";
@@ -92,9 +125,9 @@ public class OrderDao {
 			pstmt.setString(7, dto.getAddressDetail());
 			pstmt.setString(8, dto.getAddressEtc());
 			pstmt.executeUpdate();
-			
+
 			pstmt.close();
-			
+
 			pstmt = conn.prepareStatement(query2);
 			rs = pstmt.executeQuery();
 
@@ -104,7 +137,7 @@ public class OrderDao {
 
 			rs.close();
 			pstmt.close();
-			
+
 			for (int i = 0; i < cart.size(); i++) {
 				pstmt = conn.prepareStatement(query3);
 				pstmt.setInt(1, orderNum);
@@ -164,16 +197,18 @@ public class OrderDao {
 		return dto;
 	}
 
-	//주문목록
-	public ArrayList<OrderDto> orderList(String memberId){
+	// 주문목록
+	public ArrayList<OrderDto> orderList(String memberId, int start, int listSize) {
 		ArrayList<OrderDto> list = new ArrayList<OrderDto>();
 		String query = "SELECT A.order_num, A.order_regdate, B.product_name, B.product_price, B.amount FROM "
-				+ "orders A, order_detail B WHERE A.order_num = B.order_num AND A.member_id = ?";
+				+ "orders A, order_detail B WHERE A.order_num = B.order_num AND A.member_id = ? limit ?, ?";
 
 		try {
 			conn = DBconnector.getConnection();
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, memberId);
+			pstmt.setInt(2, start);
+			pstmt.setInt(3, listSize);
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -183,7 +218,7 @@ public class OrderDao {
 				dto.setProductName(rs.getString("product_name"));
 				dto.setProductPrice(rs.getInt("product_price"));
 				dto.setAmount(rs.getInt("amount"));
-				
+
 				list.add(dto);
 			}
 
@@ -206,8 +241,5 @@ public class OrderDao {
 		}
 		return list;
 	}
-
-
-	
 
 }
