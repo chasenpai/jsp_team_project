@@ -48,21 +48,21 @@ public class QnADao {
 	}
 
 	// QnA 목록
-	public ArrayList<QnADto> qnaList() {
+	public ArrayList<QnADto> qnaList(int start, int listSize) {
 		ArrayList<QnADto> list = new ArrayList<QnADto>();
-		String query = "SELECT CASE WHEN LEVEL-1 > 0 \r\n"
+		String query = "select * from ( SELECT CASE WHEN LEVEL-1 > 0 \r\n"
 				+ "THEN CONCAT(CONCAT(REPEAT('     ', level - 1),'   ㄴre:'), b.qna_title)\r\n" + "ELSE b.qna_title\r\n"
 				+ "END AS qna_title\r\n" + ",b.qna_writer\r\n" + ",b.qna_regdate\r\n" + ",b.qna_views\r\n"
 				+ ",b.qna_num\r\n" + ",b.parent_num\r\n" + ",fnc.level\r\n" + "FROM\r\n"
 				+ "(SELECT fnc_qna() AS id, @level AS LEVEL\r\n"
 				+ "FROM (SELECT @start_with:=0, @id:=@start_with, @level:=0) vars\r\n" + "JOIN qna\r\n"
-				+ "WHERE @id IS NOT NULL) fnc\r\n" + "JOIN qna b ON fnc.id = b.qna_num";
+				+ "WHERE @id IS NOT NULL) fnc\r\n" + "JOIN qna b ON fnc.id = b.qna_num ) a  limit ?, ? ";
 
 		try {
 			conn = DBconnector.getConnection();
 			pstmt = conn.prepareStatement(query);
-		//	pstmt.setInt(1, start);
-		//	pstmt.setInt(2, listSize);
+			pstmt.setInt(1, start);
+			pstmt.setInt(2, listSize);
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {

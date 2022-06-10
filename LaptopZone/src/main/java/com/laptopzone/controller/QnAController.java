@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.laptopzone.service.ProductService;
 import com.laptopzone.service.QnAService;
 
 @WebServlet(urlPatterns = {"/qnaList", "/writeQnA", "/insertQnA", "/updateQnA", "/selectQnA", "/deleteQnA", "/replyQnA"})
@@ -26,7 +27,17 @@ public class QnAController extends HttpServlet {
 		
 		//QnA 목록
 		if(com.equals("/qnaList")) {
-			request.setAttribute("qnaList", new QnAService().getQnaList());
+			String tmp = request.getParameter("page");
+
+			int pageNum;
+			
+			if(tmp != null && tmp.length() > 0) {
+				pageNum = Integer.parseInt(tmp);
+			}else {
+				pageNum = 1;
+			}
+			request.setAttribute("pagination", new QnAService().getPagination(pageNum));
+			request.setAttribute("qnaList", new QnAService().getQnaList(pageNum));
 			
 			view = "qna.jsp";
 		

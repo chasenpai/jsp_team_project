@@ -115,6 +115,7 @@
 	.title {
 		width: 325px;
 		height: 40px;
+		
 	}
 	
 	.writer {
@@ -187,13 +188,16 @@
 
 				<table>
 					<tr>
+						<th class="num">번호</th>
 						<th class="title">제목</th>
 						<th class="writer">작성자</th>
 						<th class="regdate">작성시간</th>
 						<th class="views">조회수</th>
 					</tr>
 					<c:forEach var="qna" items="${qnaList }">
+						
 						<tr>
+							<td class="num">${qna.qnaNum }</td>
 							<c:choose>
 								<c:when test="${qna.parentNum > 0 }">
 									<td class="title"><a href="selectQnA?qnaNum=${qna.qnaNum }"><span style="padding-left: 40px;">${qna.qnaTitle }</span></a></td>
@@ -212,6 +216,20 @@
 				<br>
 				<input type="button" value="글쓰기" onclick="goWrite()">
 			</div>
+			<div style="width:800px; text-align: center;">
+						<c:forEach var="pgn" items="${pagination }">
+							<a href="qnaList?page=${pgn.pageNum }">
+								<c:choose>
+									<c:when test="${pgn.curPage }">
+										<u>${pgn.display }</u>
+									</c:when>
+									<c:otherwise>
+										${pgn.display }
+									</c:otherwise>
+								</c:choose>
+							</a>&nbsp;	
+						</c:forEach>
+					</div>
 		</section>
 	</div>
 </body>
